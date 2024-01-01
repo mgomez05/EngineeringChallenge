@@ -3,6 +3,7 @@ import { Text, View } from '../components/Themed';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
+import { router } from 'expo-router';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState<string>('');
@@ -13,6 +14,7 @@ export default function RegisterScreen() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('Created new user successfully:', user);
+        router.replace('/login');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -24,8 +26,6 @@ export default function RegisterScreen() {
         );
       });
   };
-
-  console.log('Current email and password:', email, ',', password);
 
   const styles = {
     input: {

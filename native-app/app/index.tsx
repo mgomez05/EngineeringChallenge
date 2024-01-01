@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
 import { router } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const insets = useSafeAreaInsets();
 
   const createUser = async () => {
     await createUserWithEmailAndPassword(auth, email, password)
@@ -34,22 +37,31 @@ export default function RegisterScreen() {
   };
 
   return (
-    <View style={{ paddingHorizontal: 10 }}>
-      <Text style={{ textAlign: 'center' }}>Register Screen</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        placeholder={'Username'}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        value={password}
-        placeholder={'Password'}
-        secureTextEntry
-        onChangeText={setPassword}
-      />
-      <Button title='Register' onPress={createUser} />
+    <View
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
+      <View style={{ paddingHorizontal: 10 }}>
+        <Text style={{ textAlign: 'center' }}>Register Screen</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          placeholder={'Username'}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          placeholder={'Password'}
+          secureTextEntry
+          onChangeText={setPassword}
+        />
+        <Button title='Register' onPress={createUser} />
+      </View>
     </View>
   );
 }

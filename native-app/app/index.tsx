@@ -27,15 +27,23 @@ export default function RegisterScreen() {
 
   console.log('Current email and password:', email, ',', password);
 
+  const styles = {
+    input: {
+      padding: 10,
+    },
+  };
+
   return (
-    <View>
+    <View style={{ paddingHorizontal: 10 }}>
       <Text style={{ textAlign: 'center' }}>Register Screen</Text>
       <TextInput
+        style={styles.input}
         value={email}
         placeholder={'Username'}
         onChangeText={setEmail}
       />
       <TextInput
+        style={styles.input}
         value={password}
         placeholder={'Password'}
         secureTextEntry

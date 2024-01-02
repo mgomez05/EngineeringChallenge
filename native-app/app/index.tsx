@@ -78,6 +78,23 @@ export default function RegisterScreen() {
           onChangeText={setPassword}
         />
         <Button title='Register' onPress={createUser} />
+        <View
+          style={{
+            alignItems: 'center',
+          }}
+        >
+          <Text>
+            Already have an account?{' '}
+            <Text
+              onPress={() => {
+                router.replace('/login');
+              }}
+              style={{ color: '#2196F3', fontWeight: 'bold' }}
+            >
+              Sign in
+            </Text>
+          </Text>
+        </View>
       </View>
     </View>
   );

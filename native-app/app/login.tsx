@@ -61,6 +61,23 @@ export default function LoginScreen() {
           onChangeText={setPassword}
         />
         <Button title='Login' onPress={loginUser} />
+        <View
+          style={{
+            alignItems: 'center',
+          }}
+        >
+          <Text>
+            Don't have an account yet?{' '}
+            <Text
+              onPress={() => {
+                router.replace('/');
+              }}
+              style={{ color: '#2196F3', fontWeight: 'bold' }}
+            >
+              Sign up
+            </Text>
+          </Text>
+        </View>
       </View>
     </View>
   );

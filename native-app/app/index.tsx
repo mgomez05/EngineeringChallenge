@@ -5,6 +5,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState<string>('');
@@ -17,7 +19,6 @@ export default function RegisterScreen() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('Created new user successfully:', user);
-        router.replace('/login');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -29,6 +30,22 @@ export default function RegisterScreen() {
         );
       });
   };
+
+  // Listen for changes to the user's auth state
+  // - If the user is signed in, navigate to the machine health page
+  //    - NOTE: The user is considered signed in immediately after registering,
+  //            OR if they've registered / logged in to the app before
+  // - Otherwise, if the user hasn't signed in, keep them here on the registration page
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('User is logged in, in _layout.tsx', user.email);
+        router.push('/(tabs)');
+      } else {
+        console.log('user is logged out, in _layout.tsx');
+      }
+    });
+  }, []);
 
   const styles = {
     input: {

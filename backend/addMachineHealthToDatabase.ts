@@ -87,10 +87,69 @@ export const insertMachineDataToDatabase = async (req: Request) => {
         });
       } else if (machineType === MachineType.PaintingStation) {
         console.log('Machine is paintingStation');
+        creationResult = await getPrismaClient().paintingStation.create({
+          data: {
+            paintFlowRate: getMachinePartValue(
+              machine,
+              PaintingStationPart.FlowRate
+            ),
+            paintPressure: getMachinePartValue(
+              machine,
+              PaintingStationPart.Pressure
+            ),
+            paintColorConsistency: getMachinePartValue(
+              machine,
+              PaintingStationPart.ColorConsistency
+            ),
+            paintNozzleCondition: getMachinePartValue(
+              machine,
+              PaintingStationPart.NozzleCondition
+            ),
+          },
+        });
       } else if (machineType === MachineType.AssemblyLine) {
-        console.log('Machine is assemblyLine');
+        creationResult = await getPrismaClient().assemblyLine.create({
+          data: {
+            partAlignmentAccuracy: getMachinePartValue(
+              machine,
+              AssemblyLinePart.AlignmentAccuracy
+            ),
+            assemblyLineSpeed: getMachinePartValue(
+              machine,
+              AssemblyLinePart.Speed
+            ),
+            componentFittingTolerance: getMachinePartValue(
+              machine,
+              AssemblyLinePart.FittingTolerance
+            ),
+            conveyorBeltSpeed: getMachinePartValue(
+              machine,
+              AssemblyLinePart.BeltSpeed
+            ),
+          },
+        });
       } else if (machineType === MachineType.QualityControlStation) {
         console.log('Machine is qualityControlStation');
+        creationResult = await getPrismaClient().qualityControlStation.create({
+          data: {
+            inspectionCameraCalibration: getMachinePartValue(
+              machine,
+              QualityControlStationPart.CameraCalibration
+            ),
+            inspectionLightIntensity: getMachinePartValue(
+              machine,
+              QualityControlStationPart.LightIntensity
+            ),
+            inspectionSoftwareVersion: getMachinePartValue(
+              machine,
+              QualityControlStationPart.SoftwareVersion
+            ),
+            inspectionCriteriaSettings: getMachinePartValue(
+              machine,
+              QualityControlStationPart.CriteriaSettings
+            ),
+          },
+        });
       } else {
         console.log('Machine type is not recognized');
       }

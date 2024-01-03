@@ -21,6 +21,7 @@ model WeldingRobot {
     arcStability              Float
     weldSeamWidth             Float
     coolingSystemEfficiency   Float
+    dateCreated               DateTime @default(now())
 }
 
 model PaintingStation {
@@ -29,6 +30,7 @@ model PaintingStation {
     paintPressure          Float
     paintColorConsistency  Float
     paintNozzleCondition   Float
+    dateCreated            DateTime @default(now())
 }
 
 model AssemblyLine {
@@ -37,6 +39,7 @@ model AssemblyLine {
     assemblyLineSpeed         Float
     componentFittingTolerance Float
     conveyorBeltSpeed         Float
+    dateCreated               DateTime @default(now())
 }
 
 model QualityControlStation {
@@ -45,4 +48,5 @@ model QualityControlStation {
     inspectionLightIntensity   Float
     inspectionSoftwareVersion  Float
     inspectionCriteriaSettings Float
+    dateCreated                DateTime @default(now())
 }

@@ -29,10 +29,10 @@ app.get('/machine', async (req: Request, res: Response) => {
   return res.json(allMachines);
 });
 
-// Endpoint to insert machine health data into database
-app.post('/machine-health', (req: Request, res: Response) => {
-  console.log('In app in POST /machine-health');
-  const result = insertMachineDataToDatabase(req);
+// Inserts up to 4 machines into the database
+app.post('/machine', async (req: Request, res: Response) => {
+  console.log('In POST /machine');
+  const result = await insertMachineDataToDatabase(req);
   if (!result) {
     res.status(400).json(result);
   } else {

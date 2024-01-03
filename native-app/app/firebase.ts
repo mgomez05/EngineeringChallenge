@@ -20,6 +20,8 @@ const firebaseConfig = {
 let app;
 if (!app || getApps().length === 0) {
   app = initializeApp(firebaseConfig);
+
+  // Initialize auth with persistence so that we keep the user logged in across sessions
   initializeAuth(app, {
     persistence: getReactNativePersistence(AsyncStorage),
   });

@@ -10,3 +10,39 @@ datasource db {
   url      = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
+
+model WeldingRobot {
+    id                        Int      @id @default(autoincrement())
+    weldingRobotErrorRate     Float
+    weldingArmVibrationLevel  Float
+    electrodeWear             Float
+    gasShieldingPressure      Float
+    weldingWireFeedRate       Float
+    arcStability              Float
+    weldSeamWidth             Float
+    coolingSystemEfficiency   Float
+}
+
+model PaintingStation {
+    id                     Int      @id @default(autoincrement())
+    paintFlowRate          Float
+    paintPressure          Float
+    paintColorConsistency  Float
+    paintNozzleCondition   Float
+}
+
+model AssemblyLine {
+    id                        Int      @id @default(autoincrement())
+    partAlignmentAccuracy     Float
+    assemblyLineSpeed         Float
+    componentFittingTolerance Float
+    conveyorBeltSpeed         Float
+}
+
+model QualityControlStation {
+    id                        Int      @id @default(autoincrement())
+    inspectionCameraCalibration Float
+    inspectionLightIntensity   Float
+    inspectionSoftwareVersion  Float
+    inspectionCriteriaSettings Float
+}

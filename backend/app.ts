@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express';
 import { getMachineHealth } from './machineHealth';
-import { insertMachineDataToDatabase } from './addMachineHealthToDatabase';
+import {
+  getAllMachines,
+  insertMachineDataToDatabase,
+} from './addMachineHealthToDatabase';
 
 const app = express();
 const port = 3001;
@@ -17,6 +20,14 @@ app.use(express.json());
 //     res.json(result);
 //   }
 // });
+
+// Returns all the machines in the database
+app.get('/machine', async (req: Request, res: Response) => {
+  console.log('In GET /machine');
+
+  const allMachines = await getAllMachines();
+  return res.json(allMachines);
+});
 
 // Endpoint to insert machine health data into database
 app.post('/machine-health', (req: Request, res: Response) => {

@@ -177,3 +177,21 @@ const getMachinePartValue = (
 ) => {
   return parseFloat(machine[machinePart]) || 0.0;
 };
+
+// Returns all machines in the database
+export const getAllMachines = async () => {
+  const weldingRobots = await getPrismaClient().weldingRobot.findMany();
+  const assemblyLines = await getPrismaClient().assemblyLine.findMany();
+  const paintingStations = await getPrismaClient().paintingStation.findMany();
+  const qualityControlStations =
+    await getPrismaClient().qualityControlStation.findMany();
+
+  const machines = [
+    ...weldingRobots,
+    ...assemblyLines,
+    ...paintingStations,
+    ...qualityControlStations,
+  ];
+
+  return machines;
+};

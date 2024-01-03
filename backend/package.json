@@ -13,6 +13,7 @@
   "author": "BellSant",
   "dependencies": {
     "@netlify/functions": "^2.0.2",
+    "@prisma/client": "^5.7.1",
     "express": "^4.17.1",
     "prisma": "^5.7.1",
     "serverless-http": "^3.2.0",

@@ -44,10 +44,8 @@ export const getMachineHealth = async (req: Request) => {
 
   console.log('Here are machines', machines);
 
-  // Initilize the machine scores dictionary
-  const machineScores: {
-    [key in MachineType]?: string;
-  } = {};
+  // Initialize the machine scores array and related variables
+  const machineScores = [];
   let factoryScore = 0;
   let machineCount = 0;
 
@@ -102,13 +100,20 @@ export const getMachineHealth = async (req: Request) => {
     );
 
     // Calculate the machine's score using its <machineType> and <machinePartInfos>,
-    // and add it to the machineScores dictionary
+    // and add it to the machineScores array
     const machineScore = calculateMachineHealth(
       machineType,
       filteredMachinePartInfos
     );
-    machineScores[machineType] = machineScore.toFixed(2);
+    const machineScoreObject = {
+      machineType: machineType,
+      machineTypeId: machine.id,
+      machineScore: machineScore.toFixed(2),
+    };
 
+    machineScores.push(machineScoreObject);
+
+    // Update the factory score and machine score (for when we calculate the final factory score later)
     factoryScore += machineScore;
     machineCount++;
   }

@@ -34,7 +34,7 @@ const isQualityControlStation = (machine: any) => {
   return 'cameraCalibration' in machine;
 };
 
-export const getMachineHealth = async (req: Request) => {
+export const getMachineHealthAllMachines = async (req: Request) => {
   const machines: (
     | WeldingRobot
     | PaintingStation

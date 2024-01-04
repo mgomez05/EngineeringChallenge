@@ -13,40 +13,40 @@ datasource db {
 
 model WeldingRobot {
     id                        Int      @id @default(autoincrement())
-    weldingRobotErrorRate     Float
-    weldingArmVibrationLevel  Float
+    errorRate                 Float
+    vibrationLevel            Float
     electrodeWear             Float
-    gasShieldingPressure      Float
-    weldingWireFeedRate       Float
+    shieldingPressure         Float
+    wireFeedRate              Float
     arcStability              Float
-    weldSeamWidth             Float
-    coolingSystemEfficiency   Float
+    seamWidth                 Float
+    coolingEfficiency         Float
     dateCreated               DateTime @default(now())
 }
 
 model PaintingStation {
     id                     Int      @id @default(autoincrement())
-    paintFlowRate          Float
-    paintPressure          Float
-    paintColorConsistency  Float
-    paintNozzleCondition   Float
+    flowRate          Float
+    pressure          Float
+    colorConsistency  Float
+    nozzleCondition   Float
     dateCreated            DateTime @default(now())
 }
 
 model AssemblyLine {
     id                        Int      @id @default(autoincrement())
-    partAlignmentAccuracy     Float
-    assemblyLineSpeed         Float
-    componentFittingTolerance Float
-    conveyorBeltSpeed         Float
+    alignmentAccuracy         Float
+    speed                     Float
+    fittingTolerance          Float
+    beltSpeed                 Float
     dateCreated               DateTime @default(now())
 }
 
 model QualityControlStation {
     id                        Int      @id @default(autoincrement())
-    inspectionCameraCalibration Float
-    inspectionLightIntensity   Float
-    inspectionSoftwareVersion  Float
-    inspectionCriteriaSettings Float
-    dateCreated                DateTime @default(now())
+    cameraCalibration         Float
+    lightIntensity            Float
+    softwareVersion           Float
+    criteriaSettings          Float
+    dateCreated               DateTime @default(now())
 }

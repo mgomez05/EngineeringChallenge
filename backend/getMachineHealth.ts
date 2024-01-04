@@ -16,6 +16,8 @@ import {
 } from '@prisma/client';
 import { getAllMachines } from './addMachineHealthToDatabase';
 
+// Type checking functions for the prisma model types, so we can
+// identify the type of a given machine returned by the database
 const isWeldingRobot = (machine: any) => {
   return 'errorRate' in machine;
 };
@@ -42,6 +44,7 @@ export const getMachineHealth = async (req: Request) => {
 
   console.log('Here are machines', machines);
 
+  // Initilize the machine scores dictionary
   const machineScores: {
     [key in MachineType]?: string;
   } = {};
@@ -93,15 +96,9 @@ export const getMachineHealth = async (req: Request) => {
       return machinePartInfo;
     });
 
-    console.log('Here are machine part infos', machinePartInfos);
-
+    // Filter out any machine parts whose value is 0
     const filteredMachinePartInfos: partInfo[] = machinePartInfos.filter(
       (partInfoObject: partInfo) => !(partInfoObject.value === 0)
-    );
-
-    console.log(
-      'Here are filtered machine part infos',
-      filteredMachinePartInfos
     );
 
     // Calculate the machine's score using its <machineType> and <machinePartInfos>,
@@ -110,10 +107,7 @@ export const getMachineHealth = async (req: Request) => {
       machineType,
       filteredMachinePartInfos
     );
-    console.log('Machine score is', machineScore);
     machineScores[machineType] = machineScore.toFixed(2);
-
-    console.log('Current machineScores array', machineScores);
 
     factoryScore += machineScore;
     machineCount++;

@@ -51,11 +51,8 @@ export const insertMachineDataToDatabase = async (req: Request) => {
         console.log('Machine is weldingRobot');
         creationResult = await getPrismaClient().weldingRobot.create({
           data: {
-            weldingRobotErrorRate: getMachinePartValue(
-              machine,
-              WeldingRobotPart.ErrorRate
-            ),
-            weldingArmVibrationLevel: getMachinePartValue(
+            errorRate: getMachinePartValue(machine, WeldingRobotPart.ErrorRate),
+            vibrationLevel: getMachinePartValue(
               machine,
               WeldingRobotPart.VibrationLevel
             ),
@@ -63,11 +60,11 @@ export const insertMachineDataToDatabase = async (req: Request) => {
               machine,
               WeldingRobotPart.ElectrodeWear
             ),
-            gasShieldingPressure: getMachinePartValue(
+            shieldingPressure: getMachinePartValue(
               machine,
               WeldingRobotPart.ShieldingPressure
             ),
-            weldingWireFeedRate: getMachinePartValue(
+            wireFeedRate: getMachinePartValue(
               machine,
               WeldingRobotPart.WireFeedRate
             ),
@@ -75,11 +72,8 @@ export const insertMachineDataToDatabase = async (req: Request) => {
               machine,
               WeldingRobotPart.ArcStability
             ),
-            weldSeamWidth: getMachinePartValue(
-              machine,
-              WeldingRobotPart.SeamWidth
-            ),
-            coolingSystemEfficiency: getMachinePartValue(
+            seamWidth: getMachinePartValue(machine, WeldingRobotPart.SeamWidth),
+            coolingEfficiency: getMachinePartValue(
               machine,
               WeldingRobotPart.CoolingEfficiency
             ),
@@ -89,19 +83,19 @@ export const insertMachineDataToDatabase = async (req: Request) => {
         console.log('Machine is paintingStation');
         creationResult = await getPrismaClient().paintingStation.create({
           data: {
-            paintFlowRate: getMachinePartValue(
+            flowRate: getMachinePartValue(
               machine,
               PaintingStationPart.FlowRate
             ),
-            paintPressure: getMachinePartValue(
+            pressure: getMachinePartValue(
               machine,
               PaintingStationPart.Pressure
             ),
-            paintColorConsistency: getMachinePartValue(
+            colorConsistency: getMachinePartValue(
               machine,
               PaintingStationPart.ColorConsistency
             ),
-            paintNozzleCondition: getMachinePartValue(
+            nozzleCondition: getMachinePartValue(
               machine,
               PaintingStationPart.NozzleCondition
             ),
@@ -110,41 +104,35 @@ export const insertMachineDataToDatabase = async (req: Request) => {
       } else if (machineType === MachineType.AssemblyLine) {
         creationResult = await getPrismaClient().assemblyLine.create({
           data: {
-            partAlignmentAccuracy: getMachinePartValue(
+            alignmentAccuracy: getMachinePartValue(
               machine,
               AssemblyLinePart.AlignmentAccuracy
             ),
-            assemblyLineSpeed: getMachinePartValue(
-              machine,
-              AssemblyLinePart.Speed
-            ),
-            componentFittingTolerance: getMachinePartValue(
+            speed: getMachinePartValue(machine, AssemblyLinePart.Speed),
+            fittingTolerance: getMachinePartValue(
               machine,
               AssemblyLinePart.FittingTolerance
             ),
-            conveyorBeltSpeed: getMachinePartValue(
-              machine,
-              AssemblyLinePart.BeltSpeed
-            ),
+            beltSpeed: getMachinePartValue(machine, AssemblyLinePart.BeltSpeed),
           },
         });
       } else if (machineType === MachineType.QualityControlStation) {
         console.log('Machine is qualityControlStation');
         creationResult = await getPrismaClient().qualityControlStation.create({
           data: {
-            inspectionCameraCalibration: getMachinePartValue(
+            cameraCalibration: getMachinePartValue(
               machine,
               QualityControlStationPart.CameraCalibration
             ),
-            inspectionLightIntensity: getMachinePartValue(
+            lightIntensity: getMachinePartValue(
               machine,
               QualityControlStationPart.LightIntensity
             ),
-            inspectionSoftwareVersion: getMachinePartValue(
+            softwareVersion: getMachinePartValue(
               machine,
               QualityControlStationPart.SoftwareVersion
             ),
-            inspectionCriteriaSettings: getMachinePartValue(
+            criteriaSettings: getMachinePartValue(
               machine,
               QualityControlStationPart.CriteriaSettings
             ),

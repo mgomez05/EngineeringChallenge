@@ -5,6 +5,8 @@ import {
   insertMachineDataToDatabase,
 } from './addMachineHealthToDatabase';
 
+import { getMachineHealthAllMachines } from './getMachineHealth';
+
 const app = express();
 const port = 3001;
 
@@ -20,6 +22,13 @@ app.use(express.json());
 //     res.json(result);
 //   }
 // });
+
+// Endpoint to get machine health score of all machines in the database
+app.get('/machine-health', async (req: Request, res: Response) => {
+  console.log('In GET /machine-health');
+  const result = await getMachineHealthAllMachines(req);
+  return res.json(result);
+});
 
 // Returns all the machines in the database
 app.get('/machine', async (req: Request, res: Response) => {

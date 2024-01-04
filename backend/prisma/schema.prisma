@@ -12,7 +12,7 @@ datasource db {
 }
 
 model WeldingRobot {
-    id                        Int      @id @default(autoincrement())
+    id                        String      @id @default(uuid())
     errorRate                 Float
     vibrationLevel            Float
     electrodeWear             Float
@@ -25,16 +25,16 @@ model WeldingRobot {
 }
 
 model PaintingStation {
-    id                     Int      @id @default(autoincrement())
+    id                String      @id @default(uuid())
     flowRate          Float
     pressure          Float
     colorConsistency  Float
     nozzleCondition   Float
-    dateCreated            DateTime @default(now())
+    dateCreated       DateTime @default(now())
 }
 
 model AssemblyLine {
-    id                        Int      @id @default(autoincrement())
+    id                        String      @id @default(uuid())
     alignmentAccuracy         Float
     speed                     Float
     fittingTolerance          Float

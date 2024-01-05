@@ -2,19 +2,11 @@ import { Button, Platform, StyleSheet } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import { Link, useFocusEffect } from 'expo-router';
 import axios from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { PartsOfMachine } from '../../components/PartsOfMachine';
 import { MachineScore } from '../../components/MachineScore';
 import { newUseMachineData } from '../newUseMachineData';
-
-let apiUrl: string =
-  'https://fancy-dolphin-65b07b.netlify.app/api/machine-health';
-
-if (__DEV__) {
-  apiUrl = `http://${
-    Platform?.OS === 'android' ? '10.0.2.2' : 'localhost'
-  }:3001/machine-health`;
-}
+import { getApiUrl } from '../utils';
 
 // Type checking functions for the prisma model types, so we can
 // identify the type of a given machine returned by the database
@@ -36,6 +28,7 @@ const isQualityControlStation = (machine: any) => {
 
 export default function StateScreen() {
   const { machineData, loadMachineData } = newUseMachineData();
+  const [scores, setScores] = useState(null);
 
   // Doing this because we're not using central state like redux
   useFocusEffect(
@@ -44,26 +37,28 @@ export default function StateScreen() {
     }, [])
   );
 
-  // const calculateHealth = useCallback(async () => {
-  //   try {
-  //     const response = await axios.post(apiUrl, {
-  //       machines: machineData?.machines,
-  //     });
+  const calculateHealth = useCallback(async () => {
+    try {
+      const apiUrl = getApiUrl();
+      const response = await axios.get(`${apiUrl}/machine-health`);
 
-  //     if (response.data?.factory) {
-  //       setScores(response.data);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     console.log(
-  //       `There was an error calculating health. ${
-  //         error.toString() === 'AxiosError: Network Error'
-  //           ? 'Is the api server started?'
-  //           : error
-  //       }`
-  //     );
-  //   }
-  // }, [machineData]);
+      if (response.data) {
+        setScores(response.data);
+      } else {
+        setScores([]);
+      }
+    } catch (error) {
+      console.error(error);
+      console.log(
+        `There was an error calculating health. ${
+          error.toString() === 'AxiosError: Network Error'
+            ? 'Is the api server started?'
+            : error
+        }`
+      );
+      setScores([]);
+    }
+  }, []);
 
   const renderMachine = (machine) => {
     if (isWeldingRobot(machine)) {
@@ -98,29 +93,31 @@ export default function StateScreen() {
       {machineData && (
         <>
           {/* Render Each Machine in the list of machines */}
-          {machineData.map((machine) => renderMachine(machine))}
+          {/*{machineData.map((machine) => renderMachine(machine))}*/}
           <View
             style={styles.separator}
             lightColor='#eee'
             darkColor='rgba(255,255,255,0.1)'
           />
-          {/* Show the Factor Health Score */}
+          {/* Show the Factory Health Score */}
           <Text style={styles.title}>Factory Health Score</Text>
           <Text style={styles.text}>
-            {machineData?.scores?.factory
-              ? machineData?.scores?.factory
-              : 'Not yet calculated'}
+            {scores?.factory ? scores?.factory : 'Not yet calculated'}
           </Text>
-          {machineData?.scores?.machineScores && (
+          {/* Show the Machine Scores */}
+          {scores?.machineScores && (
             <>
               <Text style={styles.title2}>Machine Health Scores</Text>
-              {Object.keys(machineData?.scores?.machineScores).map((key) => (
-                <MachineScore
-                  key={key}
-                  machineName={key}
-                  score={machineData?.scores?.machineScores[key]}
-                />
-              ))}
+              {scores.machineScores.map((score) => {
+                console.log('Current score is', score);
+                return (
+                  <MachineScore
+                    key={score.machineTypeId}
+                    machineName={score.machineType}
+                    score={score.machineScore}
+                  />
+                );
+              })}
             </>
           )}
         </>
@@ -130,10 +127,7 @@ export default function StateScreen() {
         lightColor='#eee'
         darkColor='rgba(255,255,255,0.1)'
       />
-      <Button
-        title='Calculate Health'
-        //onPress={calculateHealth}
-      />
+      <Button title='Calculate Health' onPress={calculateHealth} />
       <View style={styles.resetButton}>
         <Button
           title='Reset Machine Data'

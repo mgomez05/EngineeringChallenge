@@ -16,7 +16,7 @@ export const PartsOfMachine = ({
   parts,
 }: {
   machineName: string;
-  parts: Record<string, string>;
+  parts: Record<string, string | number>;
 }) => {
   return (
     <>
@@ -24,7 +24,7 @@ export const PartsOfMachine = ({
         <>
           <Text style={styles.title}>{machineName}</Text>
           {Object.keys(parts).map((key) => {
-            if (key !== 'dateCreated' && key !== 'id') {
+            if (key !== 'dateCreated' && key !== 'id' && parts[key] !== 0) {
               return (
                 <Text key={key}>
                   {key}: {parts[key]}

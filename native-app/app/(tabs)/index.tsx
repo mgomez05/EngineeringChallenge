@@ -1,4 +1,4 @@
-import { Button, Platform, StyleSheet } from 'react-native';
+import { Button, Platform, ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import { Link, useFocusEffect } from 'expo-router';
 import axios from 'axios';
@@ -80,7 +80,7 @@ export default function StateScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.separator} />
       {/* Show instructions for part logging if there are no machines loaded yet */}
       {!machineData && (
@@ -93,7 +93,7 @@ export default function StateScreen() {
       {machineData && (
         <>
           {/* Render Each Machine in the list of machines */}
-          {/*{machineData.map((machine) => renderMachine(machine))}*/}
+          {machineData.map((machine) => renderMachine(machine))}
           <View
             style={styles.separator}
             lightColor='#eee'
@@ -135,13 +135,13 @@ export default function StateScreen() {
           color='#FF0000'
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
   },
   title: {

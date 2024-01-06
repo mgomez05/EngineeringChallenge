@@ -181,6 +181,9 @@ export const insertMachineDataToDatabase = async (req: Request) => {
   }
 };
 
+// Given the name of a MachinePart <machinePart>, and a record <machine> (with key of type 'MachinePart' and  value of type 'string'),
+// returns the value of machine[machinePart] as a float
+// If the machine part's value could not be processed, returns 0.0
 const getMachinePartValue = (
   machine: Record<MachinePart, string>,
   machinePart: MachinePart
@@ -188,7 +191,7 @@ const getMachinePartValue = (
   return parseFloat(machine[machinePart]) || 0.0;
 };
 
-// Returns all machines in the database
+// Returns all machines in the database as an array of json objects
 export const getAllMachines = async () => {
   const weldingRobots = await getPrismaClient().weldingRobot.findMany();
   const assemblyLines = await getPrismaClient().assemblyLine.findMany();

@@ -44,7 +44,9 @@ app.post('/machine', async (req: Request, res: Response) => {
   console.log('In POST /machine');
   const result = await insertMachineDataToDatabase(req);
   if (!result) {
-    res.status(400).json(result);
+    res.status(400).json({
+      error: 'Error, not all machines could be created in the database',
+    });
   } else {
     res.json(result);
   }

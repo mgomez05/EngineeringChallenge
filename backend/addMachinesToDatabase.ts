@@ -169,15 +169,14 @@ export const insertMachineDataToDatabase = async (req: Request) => {
     }
   }
 
-  // Return a json object to be used in the server's response
+  // If all machines were successfully created, return a json object to be used in the server's response
+  // Otherwise, return null so the server knows to send an error response
   if (successCount === totalCount) {
     return {
       message: `Successfully created ${successCount} out of ${totalCount} machines in database`,
     };
   } else {
-    return {
-      message: `Error, not all machines could be created in database, created ${successCount} out of ${totalCount} machines`,
-    };
+    return null;
   }
 };
 

@@ -1,23 +1,24 @@
-import React, {useCallback, useState} from 'react';
-import {Button, Platform, StyleSheet, TextInput} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Button, Platform, StyleSheet, TextInput } from 'react-native';
 
-import {Text, View} from './Themed';
-import {MachineType} from '../data/types';
-import {useMachineData} from '../app/useMachineData';
-import {useFocusEffect} from 'expo-router';
+import { Text, View } from './Themed';
+import { MachineType } from '../data/types';
+import { useMachineData } from '../app/useMachineData';
+import { useFocusEffect } from 'expo-router';
 import Picker from './Picker';
+import CheckBox from '@react-native-community/checkbox';
 
-export default function EditScreenInfo({path}: {path: string}) {
+export default function EditScreenInfo({ path }: { path: string }) {
   const [machineName, setMachineName] = useState('');
   const [partName, setPartName] = useState('');
   const [partValue, setPartValue] = useState('');
   const [isSaved, setIsSaved] = useState(false);
-  const {machineData, updateMachineData, loadMachineData} = useMachineData();
+  const { machineData, updateMachineData, loadMachineData } = useMachineData();
 
   const machineNames = [
-    {label: 'Welding Robot', value: MachineType.WeldingRobot},
-    {label: 'PaintingStation', value: MachineType.PaintingStation},
-    {label: 'Assembly Line', value: MachineType.AssemblyLine},
+    { label: 'Welding Robot', value: MachineType.WeldingRobot },
+    { label: 'PaintingStation', value: MachineType.PaintingStation },
+    { label: 'Assembly Line', value: MachineType.AssemblyLine },
     {
       label: 'Quality Control Station',
       value: MachineType.QualityControlStation,
@@ -25,39 +26,39 @@ export default function EditScreenInfo({path}: {path: string}) {
   ];
 
   const partNames = [
-    {value: 'arcStability', label: 'Arc Stability'},
+    { value: 'arcStability', label: 'Arc Stability' },
     {
       value: 'coolingEfficiency',
       label: 'Cooling Efficiency',
     },
-    {value: 'electrodeWear', label: 'Electrode Wear'},
-    {value: 'seamWidth', label: 'Seam Width'},
+    { value: 'electrodeWear', label: 'Electrode Wear' },
+    { value: 'seamWidth', label: 'Seam Width' },
     {
       value: 'shieldingPressure',
       label: 'Shielding Pressure',
     },
-    {value: 'vibrationLevel', label: 'Vibration Level'},
-    {value: 'wireFeedRate', label: 'Wire Feed Rate'},
+    { value: 'vibrationLevel', label: 'Vibration Level' },
+    { value: 'wireFeedRate', label: 'Wire Feed Rate' },
     {
       value: 'colorConsistency',
       label: 'Color Consistency',
     },
-    {value: 'flowRate', label: 'Flow Rate'},
+    { value: 'flowRate', label: 'Flow Rate' },
     {
       value: 'nozzleCondition',
       label: 'Nozzle Condition',
     },
-    {value: 'pressure', label: 'Pressure'},
+    { value: 'pressure', label: 'Pressure' },
     {
       value: 'alignmentAccuracy',
       label: 'Alignment Accuracy',
     },
-    {value: 'beltSpeed', label: 'Belt Speed'},
+    { value: 'beltSpeed', label: 'Belt Speed' },
     {
       value: 'fittingTolerance',
       label: 'Fitting Tolerance',
     },
-    {value: 'speed', label: 'Speed'},
+    { value: 'speed', label: 'Speed' },
     {
       value: 'cameraCalibration',
       label: 'Camera Calibration',
@@ -84,7 +85,7 @@ export default function EditScreenInfo({path}: {path: string}) {
     try {
       const newMachineData = machineData
         ? JSON.parse(JSON.stringify(machineData))
-        : {machines: {}}; // Deep copy machine parts
+        : { machines: {} }; // Deep copy machine parts
 
       if (!newMachineData.machines[machineName]) {
         newMachineData.machines[machineName] = {};
@@ -107,7 +108,7 @@ export default function EditScreenInfo({path}: {path: string}) {
   useFocusEffect(
     useCallback(() => {
       loadMachineData();
-    }, []),
+    }, [])
   );
 
   return (

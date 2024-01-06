@@ -27,7 +27,8 @@ const isQualityControlStation = (machine: any) => {
 };
 
 export default function StateScreen() {
-  const { machineData, loadMachineData } = newUseMachineData();
+  const { machineData, loadMachineData, resetMachineData } =
+    newUseMachineData();
   const [scores, setScores] = useState(null);
 
   // Doing this because we're not using central state like redux
@@ -131,7 +132,7 @@ export default function StateScreen() {
       <View style={styles.resetButton}>
         <Button
           title='Reset Machine Data'
-          //onPress={async () => await resetMachineData()}
+          onPress={async () => await resetMachineData()}
           color='#FF0000'
         />
       </View>

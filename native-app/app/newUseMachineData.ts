@@ -27,8 +27,26 @@ export const newUseMachineData = () => {
     }
   }, []);
 
+  const resetMachineData = async () => {
+    const apiUrl = getApiUrl();
+    const response = await axios.delete(`${apiUrl}/machine`);
+
+    if (response.status === 200) {
+      console.log('Machine data was reset successfully');
+    } else {
+      console.error(
+        'There was an error resetting the machine data, status code was',
+        response.status
+      );
+    }
+
+    console.log('Reloading machine data after reset');
+    await loadMachineData();
+  };
+
   return {
     machineData,
     loadMachineData,
+    resetMachineData,
   };
 };

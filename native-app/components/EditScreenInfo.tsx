@@ -177,7 +177,13 @@ export default function EditScreenInfo({ path }: { path: string }) {
       {!isNewMachinePart && renderMachinePicker()}
 
       <Button
-        title='Save'
+        // Change Button text depending on whether we're editing a part on an
+        // existing machine, or adding a new machine's part
+        title={
+          isNewMachinePart
+            ? 'Add Part to New Machine'
+            : 'Set Part for Existing Machine'
+        }
         //onPress={savePart}
       />
       {isSaved && <Text style={styles.healthScore}>Saved ✔️</Text>}

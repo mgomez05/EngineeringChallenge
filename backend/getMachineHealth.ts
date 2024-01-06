@@ -14,7 +14,7 @@ import {
   QualityControlStation,
   AssemblyLine,
 } from '@prisma/client';
-import { getAllMachines } from './addMachineHealthToDatabase';
+import { getAllMachines } from './addMachinesToDatabase';
 
 // Type checking functions for the prisma model types, so we can
 // identify the type of a given machine returned by the database

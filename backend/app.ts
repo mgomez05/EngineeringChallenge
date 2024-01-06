@@ -6,6 +6,7 @@ import {
 } from './addMachineHealthToDatabase';
 
 import { getMachineHealthAllMachines } from './getMachineHealth';
+import { getPrismaClient } from './prismaUtils';
 
 const app = express();
 const port = 3001;
@@ -46,6 +47,30 @@ app.post('/machine', async (req: Request, res: Response) => {
     res.status(400).json(result);
   } else {
     res.json(result);
+  }
+});
+
+// Deletes all machines in the database
+app.delete('/machine', async (req: Request, res: Response) => {
+  console.log('In DELETE /machine');
+
+  try {
+    await getPrismaClient().assemblyLine.deleteMany();
+    await getPrismaClient().paintingStation.deleteMany();
+    await getPrismaClient().qualityControlStation.deleteMany();
+    await getPrismaClient().weldingRobot.deleteMany();
+    res
+      .status(200)
+      .json({ message: 'Successfully removed all machines from the database' });
+  } catch (error) {
+    console.error(
+      'There was an error removing all machines from the database, please try again later'
+    );
+
+    res.status(500).json({
+      error:
+        'There was an error removing all machines from the database. Please try again later',
+    });
   }
 });
 

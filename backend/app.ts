@@ -3,7 +3,7 @@ import { getMachineHealth } from './machineHealth';
 import {
   getAllMachines,
   insertMachineDataToDatabase,
-} from './addMachineHealthToDatabase';
+} from './addMachinesToDatabase';
 
 import { getMachineHealthAllMachines } from './getMachineHealth';
 import { getPrismaClient } from './prismaUtils';

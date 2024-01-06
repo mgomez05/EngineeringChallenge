@@ -40,8 +40,14 @@ export const insertMachineDataToDatabase = async (req: Request) => {
     return null;
   }
 
+  let successCount = 0;
+  let totalCount = 0;
+
   // For each machine, loop through its parts
   for (const machineName in machines) {
+    // Add to the counter for each machine we attempt to add to the database
+    totalCount++;
+
     const machineType = machineName as MachineType;
     const machine = machines[machineType] as Record<MachinePart, string>;
 
@@ -142,6 +148,11 @@ export const insertMachineDataToDatabase = async (req: Request) => {
         console.log('Machine type is not recognized');
       }
 
+      // Add to the success count if we successfully created the machine
+      if (creationResult) {
+        successCount++;
+      }
+
       console.log(
         'Result of create of machine type',
         machineType,
@@ -156,6 +167,17 @@ export const insertMachineDataToDatabase = async (req: Request) => {
         error
       );
     }
+  }
+
+  // Return a json object to be used in the server's response
+  if (successCount === totalCount) {
+    return {
+      message: `Successfully created ${successCount} out of ${totalCount} machines in database`,
+    };
+  } else {
+    return {
+      message: `Error, not all machines could be created in database, created ${successCount} out of ${totalCount} machines`,
+    };
   }
 };
 

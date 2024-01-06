@@ -3,17 +3,19 @@ import { Button, Platform, StyleSheet, TextInput } from 'react-native';
 
 import { Text, View } from './Themed';
 import { MachineType } from '../data/types';
-import { useMachineData } from '../app/useMachineData';
 import { useFocusEffect } from 'expo-router';
 import Picker from './Picker';
-import CheckBox from '@react-native-community/checkbox';
+import Slider from '@react-native-community/slider';
+import { newUseMachineData } from '../app/newUseMachineData';
 
 export default function EditScreenInfo({ path }: { path: string }) {
   const [machineName, setMachineName] = useState('');
   const [partName, setPartName] = useState('');
   const [partValue, setPartValue] = useState('');
   const [isSaved, setIsSaved] = useState(false);
-  const { machineData, updateMachineData, loadMachineData } = useMachineData();
+  const { machineData, loadMachineData } = newUseMachineData();
+  const [sliderValue, setSliderValue] = useState(0);
+  const [machineId, setMachineId] = useState('');
 
   const machineNames = [
     { label: 'Welding Robot', value: MachineType.WeldingRobot },
@@ -81,28 +83,28 @@ export default function EditScreenInfo({ path }: { path: string }) {
     Platform?.OS === 'android' ? '10.0.2.2' : 'localhost'
   }:3001/machine-health`;
 
-  const savePart = useCallback(async () => {
-    try {
-      const newMachineData = machineData
-        ? JSON.parse(JSON.stringify(machineData))
-        : { machines: {} }; // Deep copy machine parts
+  // const savePart = useCallback(async () => {
+  //   try {
+  //     const newMachineData = machineData
+  //       ? JSON.parse(JSON.stringify(machineData))
+  //       : { machines: {} }; // Deep copy machine parts
 
-      if (!newMachineData.machines[machineName]) {
-        newMachineData.machines[machineName] = {};
-      }
+  //     if (!newMachineData.machines[machineName]) {
+  //       newMachineData.machines[machineName] = {};
+  //     }
 
-      newMachineData.machines[machineName][partName] = partValue;
+  //     newMachineData.machines[machineName][partName] = partValue;
 
-      await updateMachineData(newMachineData);
-      setIsSaved(true);
-      setTimeout(() => {
-        setIsSaved(false);
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-      throw error; // Handle API errors appropriately
-    }
-  }, [machineData, updateMachineData, machineName, partName, partValue]);
+  //     await updateMachineData(newMachineData);
+  //     setIsSaved(true);
+  //     setTimeout(() => {
+  //       setIsSaved(false);
+  //     }, 2000);
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error; // Handle API errors appropriately
+  //   }
+  // }, [machineData, updateMachineData, machineName, partName, partValue]);
 
   //Doing this because we're not using central state like redux
   useFocusEffect(
@@ -110,6 +112,34 @@ export default function EditScreenInfo({ path }: { path: string }) {
       loadMachineData();
     }, [])
   );
+
+  // Translate the slider's value into a meaningfully-named variable
+  const isNewMachinePart = sliderValue === 0;
+
+  // If <machineData> has been loaded and has at least one entry,
+  // this returns a <Picker> that allows the user to select an id
+  // from the ids found in <machineData>
+  // Otherwise, returns an error <Text> with instructions
+  const renderMachinePicker = () => {
+    if (machineData && machineData.length > 0) {
+      // Get all the machine ids from the array of machines in <machineData>
+      const existingMachines = machineData.map((machine) => {
+        return { value: machine.id, label: machine.id };
+      });
+      return (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>Select Machine Id</Text>
+          <Picker
+            value={machineId}
+            onSetValue={setMachineId}
+            items={existingMachines}
+          />
+        </View>
+      );
+    } else {
+      return <Text>No machines exist yet, add a new machine first!</Text>;
+    }
+  };
 
   return (
     <View>
@@ -119,10 +149,8 @@ export default function EditScreenInfo({ path }: { path: string }) {
         onSetValue={setMachineName}
         items={machineNames}
       />
-
       <Text style={styles.label}>Part Name</Text>
       <Picker value={partName} onSetValue={setPartName} items={partNames} />
-
       <Text style={styles.label}>Part Value</Text>
       <TextInput
         style={styles.input}
@@ -131,8 +159,27 @@ export default function EditScreenInfo({ path }: { path: string }) {
         placeholder='Enter part value'
       />
 
-      <Button title='Save' onPress={savePart} />
+      {/* Choice: New Machine or Existing Machine */}
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text>New Machine or Existing Machine</Text>
+        <Slider
+          style={{ width: 50, height: 40 }}
+          value={sliderValue}
+          onValueChange={setSliderValue}
+          minimumValue={0}
+          maximumValue={1}
+          minimumTrackTintColor='#000000'
+          maximumTrackTintColor='#000000'
+        />
+      </View>
 
+      {/* Show Machine Id Picker if user is editing an existing machine */}
+      {!isNewMachinePart && renderMachinePicker()}
+
+      <Button
+        title='Save'
+        //onPress={savePart}
+      />
       {isSaved && <Text style={styles.healthScore}>Saved ✔️</Text>}
     </View>
   );

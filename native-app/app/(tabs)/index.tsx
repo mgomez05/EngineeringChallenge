@@ -38,6 +38,10 @@ export default function StateScreen() {
     }, [])
   );
 
+  // Retrieve the machine scores and factory scores
+  // from the server via the GET /machine-health endpoint
+  //    - If the request succeeds, we set the scores using setScores()
+  //    - If the request fails, we reset the scores to the empty list []
   const calculateHealth = useCallback(async () => {
     try {
       const apiUrl = getApiUrl();
@@ -61,6 +65,9 @@ export default function StateScreen() {
     }
   }, []);
 
+  // Given one of the 4 machines provided by the server in a GET /machine request,
+  // it returns that <machine> as a <PartsOfMachine> component
+  // - If the machine type is not recognized, it returns <></>
   const renderMachine = (machine) => {
     if (isWeldingRobot(machine)) {
       return (
@@ -110,7 +117,7 @@ export default function StateScreen() {
       )}
       {machineData && (
         <>
-          {/* Render Each Machine in the list of machines */}
+          {/* Render Each Machine in the list of machines provided by the server */}
           {machineData.map((machine) => renderMachine(machine))}
           <View
             style={styles.separator}

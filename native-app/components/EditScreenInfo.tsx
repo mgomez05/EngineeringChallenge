@@ -166,6 +166,8 @@ export default function EditScreenInfo({ path }: { path: string }) {
       return;
     }
 
+    // Show an error message if the current <partName> isn't compatible
+    // with the <machineName> currently selected by the user
     if (!isValidPartForMachineType()) {
       setErrorMessage('Please select a valid part for machine: ' + machineName);
       // Clear the message after 2 seconds
@@ -181,19 +183,21 @@ export default function EditScreenInfo({ path }: { path: string }) {
     setErrorMessage('');
 
     try {
-      // Convert the <machineName>
+      // Convert the gathered data into a machine data object for populating the request body
       const machineData = {
         [machineName]: {
           [partName]: partValue,
         },
       };
 
-      // Send the request to edit the machine or add a new machine's part
+      // Send the update / create new machine request
       const updateSucceeded = await editMachineData(
         isNewMachinePart ? '' : machineId,
         machineData
       );
 
+      // Show a 'Saved' message if the update or creating succeeded
+      // Otherwise, show an error message depending on whether it was an update request or a 'create new machine' request
       if (updateSucceeded) {
         console.log('Machine updated / created successfully');
         setIsSaved(true);
@@ -291,7 +295,10 @@ export default function EditScreenInfo({ path }: { path: string }) {
         }
         onPress={savePart}
       />
+      {/* Show Save Message if the savePart() function succeeded */}
       {isSaved && <Text style={styles.healthScore}>Saved ✔️</Text>}
+
+      {/* Show Errorm Message if there was an error during the savePart() function */}
       {errorMessage && (
         <Text style={{ textAlign: 'center', color: 'red' }}>
           {errorMessage}

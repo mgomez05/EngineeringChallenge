@@ -58,7 +58,7 @@ export const useMachineDataFromAPI = () => {
   // - If <machineId> is the empty string, we attempt to create a new machine:
   //    - Returns true if the machine was created, and reloads the machines from the database
   //    - Otherwise returns false
-  // -Otherwise, if <machineId> is non-empty, we attempt to update the machine with id <machineId>:
+  // - Otherwise, if <machineId> is non-empty, we attempt to update the machine with id <machineId>:
   //    - Returns true if the machine was updated, and reloads the machines from the database
   //    - Otherwise returns false
   const editMachineData = async (machineId: string, machineData: any) => {

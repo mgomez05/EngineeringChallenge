@@ -7,6 +7,7 @@ import {
 
 import { getMachineHealthAllMachines } from './getMachineHealth';
 import { getPrismaClient } from './prismaUtils';
+import { editMachineData } from './editMachineData';
 
 const app = express();
 const port = 3001;
@@ -49,6 +50,23 @@ app.post('/machine', async (req: Request, res: Response) => {
     });
   } else {
     res.json(result);
+  }
+});
+
+app.put('/machine', async (req: Request, res: Response) => {
+  console.log('In PUT /machine');
+  const result = await editMachineData(req);
+
+  if (result.status === 200) {
+    res.status(result.status).json({
+      message: 'Machine was created / updated successfully in the database',
+      data: result,
+    });
+  } else {
+    res.status(result.status).json({
+      error: 'Error, machine could be created / updated in the database',
+      data: result,
+    });
   }
 });
 

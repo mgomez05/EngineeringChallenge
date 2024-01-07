@@ -183,7 +183,7 @@ export const insertMachineDataToDatabase = async (req: Request) => {
 // Given the name of a MachinePart <machinePart>, and a record <machine> (with key of type 'MachinePart' and  value of type 'string'),
 // returns the value of machine[machinePart] as a float
 // If the machine part's value could not be processed, returns 0.0
-const getMachinePartValue = (
+export const getMachinePartValue = (
   machine: Record<MachinePart, string>,
   machinePart: MachinePart
 ) => {

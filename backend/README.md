@@ -41,9 +41,8 @@ Follow these steps to set up the backend:
 ```
  DATABASE_URL=""
 ```
-
-- If the database user you provided in `DATABASE_URL` has permission to create databases, the `SHADOW_DATABASE_URL` environment variable I mentioned above in 3a is not necessary.
-- After setting the `DATABASE_URL`, run `yarn prisma migrate dev` in terminal to apply the existing migrations to your database
+   - If the database user you provided in `DATABASE_URL` has permission to create databases, the `SHADOW_DATABASE_URL` environment variable I mentioned above in 3a is not necessary.
+   - After setting the `DATABASE_URL`, run `yarn prisma migrate dev` in terminal to apply the existing migrations to your database
 
 4. Initialize the prisma client
 

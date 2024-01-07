@@ -55,14 +55,14 @@ export const editMachineData = async (req: Request) => {
   }
 
   // Otherwise, if a machineId was provided, we attempt to update an existing machine
-  // - First, we parse request body into a <machines> record
+  // - First, we parse request body into a <machine> record
   const {
     machine,
   }: {
     machine: Record<MachineType, Record<MachinePart, string>>;
   } = req.body;
 
-  // Return null if the request couldn't be parsed
+  // Return null if a <machine> record in the request couldn't be parsed
   if (!machine) {
     return {
       status: 400,
@@ -70,7 +70,7 @@ export const editMachineData = async (req: Request) => {
     };
   }
 
-  // Then, extract the machine's data from the <machine> records
+  // Then, extract the machine's data from the <machine> record
   // and use that data to update it in the database
   try {
     for (const machineName in machine) {
@@ -126,7 +126,7 @@ export const editMachineData = async (req: Request) => {
       }
 
       // Collect all the machine's parts and values into a JS object
-      // we can use to update the machine in the database
+      // that we can use to update the machine in the database
       let partsToUpdate = {};
       for (const part in machineParts) {
         if (machineParts.hasOwnProperty(part)) {

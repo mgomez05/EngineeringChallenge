@@ -1,8 +1,10 @@
 # BellSant Machine Health API
 
-Welcome to the BellSant Machine Health API! This API allows you to evaluate the health of various machines and their components based on provided data. This README provides instructions on how to set up and use the API.
+Welcome to my version of the BellSant Machine Health API! This API allows you to evaluate the health of various machines and their components based on provided data. This README provides instructions on how to set up and use the API.
 
-## Prerequisites
+## Running the Backend Locally
+
+### Prerequisites
 
 Before you get started, make sure you have the following prerequisites installed on your system:
 
@@ -11,7 +13,7 @@ Before you get started, make sure you have the following prerequisites installed
 
 ## Installation
 
-Follow these steps to set up the BellSant Machine Health API:
+Follow these steps to set up the backend:
 
 1. Navigate to the project directory:
 
@@ -25,8 +27,6 @@ Follow these steps to set up the BellSant Machine Health API:
    yarn
    ```
 
-## Usage
-
 ### Starting the API
 
 To start the API, run the following command:
@@ -37,9 +37,9 @@ yarn start
 
 The API will be accessible at `http://localhost:3001` by default. You can change the port or other configurations in the `app.ts` file.
 
-### Evaluating Machine Health
+### Check API is Up and Running
 
-You can evaluate the health of a machine by sending a POST request to the `/machine-health` endpoint. Here's an example using cURL:
+You can check the status of the backend by sending a POST request to the `POST /machine` endpoint. Here's an example using cURL:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
@@ -49,29 +49,196 @@ curl -X POST -H "Content-Type: application/json" -d '{
       "vibrationLevel": "2.5"
     }
   }
-}' http://localhost:3001/machine-health
+}' http://localhost:3001/machine
 ```
 
-The response will include the machine name and its health score.
+The response will specify how many machines in your request were able to created
+For the example above, the response should look lik ethis:
+
+```
+STATUS 200
+{
+    "message": "Successfully created 1 out of 1 machines in database"
+}
+```
 
 ### API Endpoints
 
-- `POST /machine-health`: Calculate the health of a machine based on provided data.
+#### `GET /machine`
 
-## Testing
+- Used for populating the **Main Tab** of the mobile app
+- Returns all machines in the database
+- If there are no machines in the database, returns the empty list
 
-You can add and run tests to ensure the correctness of the API. Follow these steps to add tests:
+**Sample Response**
 
-1. Locate the "tests" folder
+```
+STATUS 200
+[
+    {
+        "id": "7139c76d-3eaa-4b31-a845-95c0638d2dc9",
+        "errorRate": 0.79,
+        "vibrationLevel": 0.68,
+        "electrodeWear": 0,
+        "shieldingPressure": 0,
+        "wireFeedRate": 0,
+        "arcStability": 0,
+        "seamWidth": 0,
+        "coolingEfficiency": 0,
+        "dateCreated": "2024-01-06T05:48:33.938Z"
+    },
+    {
+        "id": "e467dfec-73e6-41ef-a220-f536996629d5",
+        "flowRate": 0,
+        "pressure": 0,
+        "colorConsistency": 99,
+        "nozzleCondition": 0,
+        "dateCreated": "2024-01-07T04:14:49.923Z"
+    }
+    ...
+]
+```
 
-2. Inside the "tests" folder, you can create test files for your code. You can use testing libraries like Jest, Mocha, or others to write your tests. There is a starter example test to help you get started.
+#### `POST /machine`
 
-3. To run the tests, use the following command:
+- Used for manual testing
+- Inserts 1 or more machines into the database
 
-   ```bash
-   yarn test
-   ```
+**Sample Request Body**
 
-## Customization
+```
+{
+  "machines": {
+    "weldingRobot": {
+      "errorRate": "0.79",
+      "vibrationLevel": "0.68"
+    },
+    "assemblyLine": {
+      "alignmentAccuracy": 0.21
+    }
+  }
+}
+```
 
-You can customize machine data and health evaluation logic by modifying the `machineData.json` file and the calculation functions in `app.ts`.
+**Sample Response**
+
+```
+STATUS 200
+{
+    "message": "Successfully created 2 out of 2 machines in database"
+}
+```
+
+#### `PUT /machine`
+
+Used for the **Log Part Tab** on the mobile app
+
+- If given a 'machineId' argument, it attempts to update the machine with id `machineId` using the data provided
+- Otherwise, if no `machineId` is provided, it attempts to add a new machine with the data provided
+
+**Sample Update Machine Request Body**
+
+```
+{
+  "machineId": "af7cdd29-bcfc-4413-be29-a53884c80a71",
+  "machine": {
+    "weldingRobot": {
+      "vibrationLevel": "0.5"
+    }
+  }
+}
+```
+
+**Sample Update Machine Response**
+
+```
+STATUS 200
+{
+    "message": "Machine was created / updated successfully in the database",
+    "data": {
+        "status": 200,
+        "message": "Machine was updated successfully",
+        "updatedMachine": {
+            "id": "af7cdd29-bcfc-4413-be29-a53884c80a71",
+            "errorRate": 0,
+            "vibrationLevel": 0,
+            "electrodeWear": 99,
+            "shieldingPressure": 0,
+            "wireFeedRate": 0,
+            "arcStability": 0,
+            "seamWidth": 0,
+            "coolingEfficiency": 0,
+            "dateCreated": "2024-01-07T04:16:07.449Z"
+        }
+    }
+}
+
+```
+
+**Sample New Machine Request Body**
+
+```
+{
+  "machine": {
+    "weldingRobot": {
+      "vibrationLevel": "0.5"
+    }
+  }
+}
+```
+
+**Sample New Machine Response**
+
+```
+STATUS 200
+{
+    "message": "Machine was created / updated successfully in the database",
+    "data": {
+        "status": 200,
+        "machineCreationResult": {
+            "message": "Successfully created 1 out of 1 machines in database"
+        }
+    }
+}
+```
+
+#### `DELETE /machine`
+
+- Used for the "Reset Machine Data" button on the **Main Tab** of the mobile app
+- Delete all machines in the database
+
+**Sample Response**
+
+```
+STATUS 200
+{
+    "message": "Successfully removed all machines from the database"
+}
+```
+
+#### `GET /machine-health`
+
+Returns the machine halth score of all machines in the database,
+as well as an overall factory score
+
+**Sample Response**
+
+```
+STATUS 200
+{
+    "factory": "38.01",
+    "machineScores": [
+        {
+            "machineType": "weldingRobot",
+            "machineTypeId": "af7cdd29-bcfc-4413-be29-a53884c80a71",
+            "machineScore": "0.00"
+        },
+        {
+            "machineType": "weldingRobot",
+            "machineTypeId": "a1666915-938b-4dc5-bf56-47dac105d8b9",
+            "machineScore": "94.17"
+        },
+        ...
+    ]
+}
+```

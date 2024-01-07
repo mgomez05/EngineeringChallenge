@@ -13,9 +13,11 @@ export default function EditScreenInfo({ path }: { path: string }) {
   const [partName, setPartName] = useState('');
   const [partValue, setPartValue] = useState('');
   const [isSaved, setIsSaved] = useState(false);
-  const { machineData, loadMachineData } = newUseMachineData();
+  const { machineData, loadMachineData, editMachineData } = newUseMachineData();
   const [sliderValue, setSliderValue] = useState(0);
   const [machineId, setMachineId] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const machineNames = [
     { label: 'Welding Robot', value: MachineType.WeldingRobot },
@@ -79,33 +81,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
     },
   ];
 
-  const apiUrl: string = `http://${
-    Platform?.OS === 'android' ? '10.0.2.2' : 'localhost'
-  }:3001/machine-health`;
-
-  // const savePart = useCallback(async () => {
-  //   try {
-  //     const newMachineData = machineData
-  //       ? JSON.parse(JSON.stringify(machineData))
-  //       : { machines: {} }; // Deep copy machine parts
-
-  //     if (!newMachineData.machines[machineName]) {
-  //       newMachineData.machines[machineName] = {};
-  //     }
-
-  //     newMachineData.machines[machineName][partName] = partValue;
-
-  //     await updateMachineData(newMachineData);
-  //     setIsSaved(true);
-  //     setTimeout(() => {
-  //       setIsSaved(false);
-  //     }, 2000);
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error; // Handle API errors appropriately
-  //   }
-  // }, [machineData, updateMachineData, machineName, partName, partValue]);
-
   //Doing this because we're not using central state like redux
   useFocusEffect(
     useCallback(() => {
@@ -115,6 +90,53 @@ export default function EditScreenInfo({ path }: { path: string }) {
 
   // Translate the slider's value into a meaningfully-named variable
   const isNewMachinePart = sliderValue === 0;
+
+  const savePart = async () => {
+    // Reset the save state and error state
+    // (in case the user attempts to log more than one part on this screen)
+    setIsSaved(false);
+    setErrorMessage('');
+
+    try {
+      // Convert the <machineName>
+      const machineData = {
+        [machineName]: {
+          [partName]: partValue,
+        },
+      };
+
+      // Send the request to edit the machine or add a new machine's part
+      const updateSucceeded = await editMachineData(
+        isNewMachinePart ? '' : machineId,
+        machineData
+      );
+
+      if (updateSucceeded) {
+        console.log('Machine updated / created successfully');
+        setIsSaved(true);
+      } else {
+        console.log('Updating / creating machine failed');
+        if (isNewMachinePart) {
+          setErrorMessage('Failed to create new machine with part specified');
+        } else {
+          setErrorMessage('Failed to update machine with part specified');
+        }
+      }
+
+      // Reset all fields and the save and error state after 2 seconds
+      setTimeout(() => {
+        setMachineName('');
+        setPartName('');
+        setPartValue('');
+        setMachineId('');
+
+        setIsSaved(false);
+        setErrorMessage('');
+      }, 2000);
+    } catch (error) {
+      console.error('Updating machine failed with error', error);
+    }
+  };
 
   // If <machineData> has been loaded and has at least one entry,
   // this returns a <Picker> that allows the user to select an id
@@ -184,9 +206,14 @@ export default function EditScreenInfo({ path }: { path: string }) {
             ? 'Add Part to New Machine'
             : 'Set Part for Existing Machine'
         }
-        //onPress={savePart}
+        onPress={savePart}
       />
       {isSaved && <Text style={styles.healthScore}>Saved ✔️</Text>}
+      {errorMessage && (
+        <Text style={{ textAlign: 'center', color: 'red' }}>
+          {errorMessage}
+        </Text>
+      )}
     </View>
   );
 }

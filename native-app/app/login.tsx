@@ -18,6 +18,8 @@ export default function LoginScreen() {
 
   const insets = useSafeAreaInsets();
 
+  // Logs in a user in firebase using the <email> and <password> entered by the user
+  // If the login fails, logs an error message
   const loginUser = async () => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -38,6 +40,8 @@ export default function LoginScreen() {
 
   return (
     <View
+      // Add SafeArea padding to this view, so that the login
+      // screen is only shown in the SafeArea of the device
       style={{
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
@@ -47,12 +51,16 @@ export default function LoginScreen() {
     >
       <View style={{ paddingHorizontal: 10 }}>
         <Text style={{ textAlign: 'center' }}>Login Screen</Text>
+
+        {/* Email Input */}
         <TextInput
           style={styles.input}
           value={email}
           placeholder={'Username'}
           onChangeText={setEmail}
         />
+
+        {/* Password Input */}
         <TextInput
           style={styles.input}
           value={password}
@@ -60,7 +68,11 @@ export default function LoginScreen() {
           secureTextEntry
           onChangeText={setPassword}
         />
+
+        {/* Login Button */}
         <Button title='Login' onPress={loginUser} />
+
+        {/* Button for Navigating to the Registration Screen */}
         <View
           style={{
             alignItems: 'center',

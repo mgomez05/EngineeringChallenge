@@ -61,7 +61,7 @@ The API will be accessible at `http://localhost:3001` by default. You can change
 
 ### Check API is Up and Running
 
-You can check the status of the backend by sending a POST request to the `POST /machine` endpoint. Here's an example using cURL:
+You can check the status of the backend by sending a request to the `POST /machine` endpoint. Here's an example using cURL:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{

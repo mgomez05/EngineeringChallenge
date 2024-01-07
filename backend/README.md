@@ -27,6 +27,29 @@ Follow these steps to set up the backend:
    yarn
    ```
 
+3. Add necessary environment variables to enable the API to connect to the database.
+
+3a. If you'd like to use the database I set up, reach out to me **mgomez05** for the database credentials
+
+```
+ DATABASE_URL=""
+ SHADOW_DATABASE_URL=""
+```
+
+3b. If you'd like to use your own database for this application, set up an empty, publicly accessible database and consult the prisma documentation for how to set the value of `DATABASE_URL` (https://www.prisma.io/docs/orm/overview/databases/postgresql)
+
+If the database user you provided in `DATABASE_URL` has permission to create databases, the `SHADOW_DATABASE_URL` environment variable I mentioned above in 3a is not necessary. After setting the `DATABASE_URL`, run `yarn prisma migrate dev` in terminal to apply the existing migrations to your database
+
+```
+ DATABASE_URL=""
+```
+
+4. Initialize the prisma client
+
+```bash
+yarn prisma generate
+```
+
 ### Starting the API
 
 To start the API, run the following command:
@@ -254,3 +277,8 @@ STATUS 200
 - `prismaUtils.ts` - Contains the `getPrismaClient()` function, which helps initialize the prisma client and provide a single point of truth for accessing the prisma client throughout the backend
 - `machineHealth.ts` - Contains the logic for the old `POST /machine-health` endpoint provided by BellSant
   - **NOTE:** The `POST /machine-health` endpoint is not accessible in my version of the backend API
+
+### About Prisma
+
+- Prisma is an ORM library in Node.js and TypeScript used for accessing a database. Multiple databases are supported, but this project uses a Postgresql database. (The database type is specified in `prisma/schema.prisma`)
+- Extensive knowledge of prisma is not needed for this project, but you can find more information here if you'd like to learn: https://www.prisma.io/

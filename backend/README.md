@@ -75,8 +75,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }' http://localhost:3001/machine
 ```
 
-The response will specify how many machines in your request were able to created
-For the example above, the response should look lik ethis:
+The response will specify how many machines in your request were able to created. For the example above, the response should look like this:
 
 ```
 STATUS 200

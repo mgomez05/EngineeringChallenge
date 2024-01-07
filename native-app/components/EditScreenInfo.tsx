@@ -88,7 +88,8 @@ export default function EditScreenInfo({ path }: { path: string }) {
     },
   ];
 
-  //Doing this because we're not using central state like redux
+  // Load the machine data from the server in case we need to show
+  // the existing machine ids in the Log Part form
   useFocusEffect(
     useCallback(() => {
       loadMachineData();
@@ -98,11 +99,15 @@ export default function EditScreenInfo({ path }: { path: string }) {
   // Translate the slider's value into a meaningfully-named variable
   const isNewMachinePart = sliderValue === 0;
 
+  // Returns true if all fields in the Log Part form are filled out
+  // Otherwise returns false
   const allFieldsFilled = () => {
     if (partName && partValue && machineName) {
       if (isNewMachinePart) {
         return true;
       } else {
+        // If the user is editing a machine, they also need to fill out the machineId
+        // field using the corresponding <Picker>
         return machineId !== '';
       }
     }
@@ -156,6 +161,16 @@ export default function EditScreenInfo({ path }: { path: string }) {
     return isRobotPartValid;
   };
 
+  // Attempts to save the part that was entered in the Log Part form
+  // into the database
+  //
+  // - If saving succeeded, it shows a saved message for 2 seconds
+  //   and then makes it disappear
+  // - If any errors occur, it shows an appropriate error message for 2 seconds
+  //   and then makes it disappear
+  //
+  // NOTE: After making the request to the server, this function also clears
+  //       all form fields after 2 seconds
   const savePart = async () => {
     // Show an error message if not all fields have been filled out
     if (!allFieldsFilled()) {
@@ -179,12 +194,13 @@ export default function EditScreenInfo({ path }: { path: string }) {
     }
 
     // Reset the save state and error state
-    // (in case the user attempts to log more than one part on this screen)
+    // (in case the user attempts to log more than one part while on this screen)
     setIsSaved(false);
     setErrorMessage('');
 
     try {
-      // Convert the gathered data into a machine data object for populating the request body
+      // Convert the form data into a machine data object
+      // (for populating the body of the request we're going to send to the server)
       const machineData = {
         [machineName]: {
           [partName]: partValue,
@@ -197,7 +213,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
         machineData
       );
 
-      // Show a 'Saved' message if the update or creating succeeded
+      // Show a 'Saved' message if the update or creation succeeded
       // Otherwise, show an error message depending on whether it was an update request or a 'create new machine' request
       if (updateSucceeded) {
         console.log('Machine updated / created successfully');
@@ -229,6 +245,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
   // If <machineData> has been loaded and has at least one entry,
   // this returns a <Picker> that allows the user to select an id
   // from the ids found in <machineData>
+  //
   // Otherwise, returns an error <Text> with instructions
   const renderMachinePicker = () => {
     if (machineData && machineData.length > 0) {
@@ -253,14 +270,18 @@ export default function EditScreenInfo({ path }: { path: string }) {
 
   return (
     <View>
+      {/* Machine Type Dropdown */}
       <Text style={styles.label}>Machine Name</Text>
       <Picker
         value={machineName}
         onSetValue={setMachineName}
         items={machineNames}
       />
+      {/* Part Name Dropdown */}
       <Text style={styles.label}>Part Name</Text>
       <Picker value={partName} onSetValue={setPartName} items={partNames} />
+
+      {/* Part Value Input */}
       <Text style={styles.label}>Part Value</Text>
       <TextInput
         style={styles.input}
@@ -299,7 +320,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
       {/* Show Save Message if the savePart() function succeeded */}
       {isSaved && <Text style={styles.healthScore}>Saved ✔️</Text>}
 
-      {/* Show Errorm Message if there was an error during the savePart() function */}
+      {/* Show Error Message if there was an error during the savePart() function */}
       {errorMessage && (
         <Text style={{ textAlign: 'center', color: 'red' }}>
           {errorMessage}

@@ -5,6 +5,9 @@ import axios from 'axios';
 export const newUseMachineData = () => {
   const [machineData, setMachineData] = useState(undefined);
 
+  // Loads all machines from the database using the GET /machine endpoint
+  //   - If the request succeeds, it sets the new machine data using setMachineData()
+  //   - Otherwise, if the request fails, it sets the machine data to the empty array []
   const loadMachineData = useCallback(async () => {
     try {
       const apiUrl = getApiUrl();
@@ -27,6 +30,11 @@ export const newUseMachineData = () => {
     }
   }, []);
 
+  // Sends a request to the DELETE /machine endpoint to remove all machines from the database
+  // - Logs an error if the request fails
+  //
+  // After making the request, it reloads the machines from the database, regardless of whether
+  // the request succeeded or failed
   const resetMachineData = async () => {
     const apiUrl = getApiUrl();
     const response = await axios.delete(`${apiUrl}/machine`);
@@ -44,11 +52,14 @@ export const newUseMachineData = () => {
     await loadMachineData();
   };
 
-  // If <machineId> is the empty string:
-  //    - Returns true if the machine was created
+  // Sends a request to the PUT /machine endpoint in order to
+  // update an existing machine's part, or create a new machine's part
+  //
+  // - If <machineId> is the empty string, we attempt to create a new machine:
+  //    - Returns true if the machine was created, and reloads the machines from the database
   //    - Otherwise returns false
-  // If <machineId> is non-empty:
-  //    - Returns true if the machine was updated
+  // -Otherwise, if <machineId> is non-empty, we attempt to update the machine with id <machineId>:
+  //    - Returns true if the machine was updated, and reloads the machines from the database
   //    - Otherwise returns false
   const editMachineData = async (machineId: string, machineData: any) => {
     try {

@@ -91,7 +91,27 @@ export default function EditScreenInfo({ path }: { path: string }) {
   // Translate the slider's value into a meaningfully-named variable
   const isNewMachinePart = sliderValue === 0;
 
+  const allFieldsFilled = () => {
+    if (partName && partValue && machineName) {
+      if (isNewMachinePart) {
+        return true;
+      } else {
+        return machineId !== '';
+      }
+    }
+  };
+
   const savePart = async () => {
+    // Show an error message if not all fields have been filled out
+    if (!allFieldsFilled()) {
+      setErrorMessage('Please fill out all fields');
+      // Clear the message after 2 seconds
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 2000);
+      return;
+    }
+
     // Reset the save state and error state
     // (in case the user attempts to log more than one part on this screen)
     setIsSaved(false);

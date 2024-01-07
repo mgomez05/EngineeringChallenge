@@ -36,7 +36,6 @@ export const editMachineData = async (req: Request) => {
     req.body = {
       machines: req.body.machine,
     };
-    console.log('Here is new request body', req.body);
     const machineCreationResult = await insertMachineDataToDatabase(req);
 
     if (!machineCreationResult) {

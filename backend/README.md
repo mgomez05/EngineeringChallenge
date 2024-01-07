@@ -281,4 +281,4 @@ STATUS 200
 ### About Prisma
 
 - Prisma is an ORM library in Node.js and TypeScript used for accessing a database. Multiple databases are supported, but this project uses a Postgresql database. (The database type is specified in `prisma/schema.prisma`)
-- Extensive knowledge of prisma is not needed for this project, but you can find more information here if you'd like to learn: https://www.prisma.io/
+- Extensive knowledge of prisma is not needed for this project, but you can find more information here if you'd like to learn more: https://www.prisma.io/

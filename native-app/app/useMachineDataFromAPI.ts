@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { getApiUrl } from './utils';
 import axios from 'axios';
 
-export const newUseMachineData = () => {
+export const useMachineDataFromAPI = () => {
   const [machineData, setMachineData] = useState(undefined);
 
   // Loads all machines from the database using the GET /machine endpoint

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { PartsOfMachine } from '../../components/PartsOfMachine';
 import { MachineScore } from '../../components/MachineScore';
-import { newUseMachineData } from '../useMachineDataFromAPI';
+import { useMachineDataFromAPI } from '../useMachineDataFromAPI';
 import { getApiUrl } from '../utils';
 
 // Type checking functions for the prisma model types, so we can
@@ -28,7 +28,7 @@ const isQualityControlStation = (machine: any) => {
 
 export default function StateScreen() {
   const { machineData, loadMachineData, resetMachineData } =
-    newUseMachineData();
+    useMachineDataFromAPI();
   const [scores, setScores] = useState(null);
 
   // Load the machines from the server

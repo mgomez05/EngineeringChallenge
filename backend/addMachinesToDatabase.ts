@@ -57,7 +57,6 @@ export const insertMachineDataToDatabase = async (req: Request) => {
     try {
       let creationResult;
       if (machineType === MachineType.WeldingRobot) {
-        console.log('Machine is weldingRobot');
         creationResult = await getPrismaClient().weldingRobot.create({
           data: {
             errorRate: getMachinePartValue(machine, WeldingRobotPart.ErrorRate),
@@ -89,7 +88,6 @@ export const insertMachineDataToDatabase = async (req: Request) => {
           },
         });
       } else if (machineType === MachineType.PaintingStation) {
-        console.log('Machine is paintingStation');
         creationResult = await getPrismaClient().paintingStation.create({
           data: {
             flowRate: getMachinePartValue(
@@ -126,7 +124,6 @@ export const insertMachineDataToDatabase = async (req: Request) => {
           },
         });
       } else if (machineType === MachineType.QualityControlStation) {
-        console.log('Machine is qualityControlStation');
         creationResult = await getPrismaClient().qualityControlStation.create({
           data: {
             cameraCalibration: getMachinePartValue(

@@ -16,6 +16,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  // Read in the SafeArea values so we can pad this screen accordingly
   const insets = useSafeAreaInsets();
 
   // Logs in a user in firebase using the <email> and <password> entered by the user

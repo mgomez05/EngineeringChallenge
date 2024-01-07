@@ -63,16 +63,33 @@ export default function StateScreen() {
 
   const renderMachine = (machine) => {
     if (isWeldingRobot(machine)) {
-      return <PartsOfMachine machineName={'Welding Robot'} parts={machine} />;
+      return (
+        <PartsOfMachine
+          key={machine.machineTypeId}
+          machineName={'Welding Robot'}
+          parts={machine}
+        />
+      );
     } else if (isAssemblyLine(machine)) {
-      return <PartsOfMachine machineName={'Assembly Line'} parts={machine} />;
+      return (
+        <PartsOfMachine
+          key={machine.machineTypeId}
+          machineName={'Assembly Line'}
+          parts={machine}
+        />
+      );
     } else if (isPaintingStation(machine)) {
       return (
-        <PartsOfMachine machineName={'Painting Station'} parts={machine} />
+        <PartsOfMachine
+          key={machine.machineTypeId}
+          machineName={'Painting Station'}
+          parts={machine}
+        />
       );
     } else if (isQualityControlStation(machine)) {
       return (
         <PartsOfMachine
+          key={machine.machineTypeId}
           machineName={'Quality Control Station'}
           parts={machine}
         />

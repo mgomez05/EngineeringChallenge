@@ -11,7 +11,6 @@ import {
   insertMachineDataToDatabase,
 } from './addMachinesToDatabase';
 import { getPrismaClient } from './prismaUtils';
-import { error } from 'console';
 
 type MachinePart =
   | WeldingRobotPart

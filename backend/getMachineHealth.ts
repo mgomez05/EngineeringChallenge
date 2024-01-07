@@ -40,8 +40,6 @@ export const getMachineHealthAllMachines = async (req: Request) => {
     | QualityControlStation
   )[] = await getAllMachines();
 
-  console.log('Here are machines', machines);
-
   // Initialize the machine scores array and related variables
   const machineScores = [];
   let factoryScore = 0;

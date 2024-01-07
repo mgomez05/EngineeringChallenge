@@ -124,7 +124,7 @@ STATUS 200
 
 #### `POST /machine`
 
-- Used for manual testing
+- Used mainly for manual testing (the mobile app does not make any calls to this endpoint)
 - Inserts 1 or more machines into the database
 
 **Sample Request Body**

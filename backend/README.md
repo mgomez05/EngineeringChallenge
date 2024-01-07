@@ -96,6 +96,7 @@ STATUS 200
 ```
 STATUS 200
 [
+    // Welding Robot
     {
         "id": "7139c76d-3eaa-4b31-a845-95c0638d2dc9",
         "errorRate": 0.79,
@@ -108,6 +109,7 @@ STATUS 200
         "coolingEfficiency": 0,
         "dateCreated": "2024-01-06T05:48:33.938Z"
     },
+    // Painting Station
     {
         "id": "e467dfec-73e6-41ef-a220-f536996629d5",
         "flowRate": 0,

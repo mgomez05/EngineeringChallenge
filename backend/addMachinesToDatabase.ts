@@ -148,7 +148,9 @@ export const insertMachineDataToDatabase = async (req: Request) => {
           },
         });
       } else {
-        console.log('Machine type is not recognized');
+        console.error(
+          `Machine type '${machineType}' was not recognized when trying to create a new machine`
+        );
       }
 
       // Add to the success count if we successfully created the machine

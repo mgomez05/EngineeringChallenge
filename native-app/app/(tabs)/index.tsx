@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { PartsOfMachine } from '../../components/PartsOfMachine';
 import { MachineScore } from '../../components/MachineScore';
-import { newUseMachineData } from '../newUseMachineData';
+import { newUseMachineData } from '../useMachineDataFromAPI';
 import { getApiUrl } from '../utils';
 
 // Type checking functions for the prisma model types, so we can

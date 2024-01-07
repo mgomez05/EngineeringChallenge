@@ -12,7 +12,7 @@ import {
 import { useFocusEffect } from 'expo-router';
 import Picker from './Picker';
 import Slider from '@react-native-community/slider';
-import { newUseMachineData } from '../app/newUseMachineData';
+import { newUseMachineData } from '../app/useMachineDataFromAPI';
 
 export default function EditScreenInfo({ path }: { path: string }) {
   const [machineName, setMachineName] = useState('');

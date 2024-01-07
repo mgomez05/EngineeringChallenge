@@ -2,9 +2,6 @@ import { Request } from 'express';
 import {
   AssemblyLinePart,
   MachineType,
-  PaintingStationPart,
-  QualityControlStationPart,
-  WeldingRobotPart,
   partInfo,
 } from '../native-app/data/types';
 import { calculateMachineHealth } from './calculations';

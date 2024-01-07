@@ -48,7 +48,7 @@ export const useMachineDataFromAPI = () => {
       );
     }
 
-    console.log('Reloading machine data after reset');
+    // Reload the machine data
     await loadMachineData();
   };
 

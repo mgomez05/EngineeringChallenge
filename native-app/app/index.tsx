@@ -14,6 +14,8 @@ export default function RegisterScreen() {
 
   const insets = useSafeAreaInsets();
 
+  // Creates a user in firebase using the <email> and <password> entered by the user
+  // If the registration fails, logs an error message
   const createUser = async () => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -54,6 +56,8 @@ export default function RegisterScreen() {
   };
 
   return (
+    // Add SafeArea padding to this view, so that the registration
+    // screen is only shown in the SafeArea of the device
     <View
       style={{
         paddingTop: insets.top,
@@ -64,12 +68,16 @@ export default function RegisterScreen() {
     >
       <View style={{ paddingHorizontal: 10 }}>
         <Text style={{ textAlign: 'center' }}>Register Screen</Text>
+
+        {/* Email Input */}
         <TextInput
           style={styles.input}
           value={email}
           placeholder={'Username'}
           onChangeText={setEmail}
         />
+
+        {/* Password Input */}
         <TextInput
           style={styles.input}
           value={password}
@@ -77,7 +85,11 @@ export default function RegisterScreen() {
           secureTextEntry
           onChangeText={setPassword}
         />
+
+        {/* Register Buttossn */}
         <Button title='Register' onPress={createUser} />
+
+        {/* Button for navigating to Login Screen */}
         <View
           style={{
             alignItems: 'center',

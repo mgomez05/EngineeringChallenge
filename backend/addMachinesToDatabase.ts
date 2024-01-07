@@ -43,14 +43,17 @@ export const insertMachineDataToDatabase = async (req: Request) => {
   let successCount = 0;
   let totalCount = 0;
 
-  // For each machine, loop through its parts
+  // For each machine in the request body, try to create the machine
+  // in the database using prisma
   for (const machineName in machines) {
     // Add to the counter for each machine we attempt to add to the database
     totalCount++;
 
+    // Parse the current machine's type and parts from the request body
     const machineType = machineName as MachineType;
     const machine = machines[machineType] as Record<MachinePart, string>;
 
+    // Try to create the machine in database, in the table indicated by <machineType>
     try {
       let creationResult;
       if (machineType === MachineType.WeldingRobot) {
@@ -152,13 +155,6 @@ export const insertMachineDataToDatabase = async (req: Request) => {
       if (creationResult) {
         successCount++;
       }
-
-      console.log(
-        'Result of create of machine type',
-        machineType,
-        'was:',
-        creationResult
-      );
     } catch (error) {
       console.error(
         'There was an error creating a machine type',
@@ -191,6 +187,7 @@ export const getMachinePartValue = (
 };
 
 // Returns all machines in the database as an array of json objects
+// Used for the GET /machine endpoint
 export const getAllMachines = async () => {
   const weldingRobots = await getPrismaClient().weldingRobot.findMany();
   const assemblyLines = await getPrismaClient().assemblyLine.findMany();

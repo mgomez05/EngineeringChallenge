@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import { getMachineHealth } from './machineHealth';
 import {
   getAllMachines,
   insertMachineDataToDatabase,

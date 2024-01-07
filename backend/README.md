@@ -161,7 +161,7 @@ STATUS 200
 
 Used for the **Log Part Tab** on the mobile app
 
-- If given a ` machineId` argument, it attempts to update the machine with id `machineId` using the data provided
+- If given a `machineId` argument, it attempts to update the machine with id `machineId` using the data provided
 - Otherwise, if no `machineId` is provided, it attempts to add a new machine with the data provided
 
 **Sample Update Machine Request Body**

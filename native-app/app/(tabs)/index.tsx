@@ -31,7 +31,7 @@ export default function StateScreen() {
     newUseMachineData();
   const [scores, setScores] = useState(null);
 
-  // Doing this because we're not using central state like redux
+  // Load the machines from the server
   useFocusEffect(
     useCallback(() => {
       loadMachineData();

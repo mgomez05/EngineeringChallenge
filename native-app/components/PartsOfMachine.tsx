@@ -23,7 +23,11 @@ export const PartsOfMachine = ({
       {parts && (
         <>
           <Text style={styles.title}>{machineName}</Text>
+
+          {/* Show Part Names and Values */}
           {Object.keys(parts).map((key) => {
+            // Don't show the 'dateCreated' and 'id' fields, or any fields
+            // whose value is 0
             if (key !== 'dateCreated' && key !== 'id' && parts[key] !== 0) {
               return (
                 <Text key={key}>

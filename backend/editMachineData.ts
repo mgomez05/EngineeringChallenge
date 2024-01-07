@@ -33,11 +33,15 @@ export const editMachineData = async (req: Request) => {
 
   // If no machine id was provided, insert the data as a new machine to the database
   if (!machineId) {
+    // Reformat the request body to be compatible with the insertMachineDataToDatabase() function,
+    // then add the machine using that function
     req.body = {
       machines: req.body.machine,
     };
     const machineCreationResult = await insertMachineDataToDatabase(req);
 
+    // If adding the machine failed, return a 400 Bad Request response
+    // Otherwise, return a 200 OK response with the data contained in <machineCreationResult>
     if (!machineCreationResult) {
       return {
         status: 400,

@@ -119,7 +119,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
     let isRobotPartValid = false;
     if (machineName === MachineType.WeldingRobot) {
       Object.values(WeldingRobotPart).forEach((validPart) => {
-        console.log('current part', validPart, '===?', partName);
         if (validPart === partName) {
           isRobotPartValid = true;
           return;
@@ -127,7 +126,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
       });
     } else if (machineName === MachineType.PaintingStation) {
       Object.values(PaintingStationPart).forEach((validPart) => {
-        console.log('current part', validPart, '===?', partName);
         if (validPart === partName) {
           isRobotPartValid = true;
           return;
@@ -135,7 +133,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
       });
     } else if (machineName === MachineType.QualityControlStation) {
       Object.values(QualityControlStationPart).forEach((validPart) => {
-        console.log('current part', validPart, '===?', partName);
         if (validPart === partName) {
           isRobotPartValid = true;
           return;
@@ -143,7 +140,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
       });
     } else if (machineName === MachineType.AssemblyLine) {
       Object.values(AssemblyLinePart).forEach((validPart) => {
-        console.log('current part', validPart, '===?', partName);
         if (validPart === partName) {
           isRobotPartValid = true;
           return;

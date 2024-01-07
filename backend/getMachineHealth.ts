@@ -32,6 +32,7 @@ const isQualityControlStation = (machine: any) => {
 };
 
 export const getMachineHealthAllMachines = async (req: Request) => {
+  // Get all machines from the database
   const machines: (
     | WeldingRobot
     | PaintingStation
@@ -51,7 +52,7 @@ export const getMachineHealthAllMachines = async (req: Request) => {
     let machineType;
     let machineParts = [];
 
-    // Get the machine's type and parts
+    // Identify the machine's type and get its parts
     if (isWeldingRobot(machine)) {
       machineType = MachineType.WeldingRobot;
       machineParts = Object.keys(
@@ -77,7 +78,7 @@ export const getMachineHealthAllMachines = async (req: Request) => {
       continue;
     }
 
-    // Filter out the id and dateCreated fields from the machineParts
+    // Filter out the id and dateCreated fields, since those aren't techically parts of the machine
     machineParts = machineParts.filter((field) => {
       return !(field === 'id' || field === 'dateCreated');
     });
@@ -116,6 +117,8 @@ export const getMachineHealthAllMachines = async (req: Request) => {
   }
 
   // Calculate the factory score (average of machine scores)
+  //  - If there are 1 or more machines, take the average of the machine scores
+  //  - If there are no machines, the factory score is 0
   factoryScore = machineCount > 0 ? factoryScore / machineCount : 0;
 
   return {

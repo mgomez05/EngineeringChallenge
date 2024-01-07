@@ -15,16 +15,6 @@ const port = 3001;
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Endpoint to get machine health score
-// app.post('/machine-health', (req: Request, res: Response) => {
-//   const result = getMachineHealth(req);
-//   if (result.error) {
-//     res.status(400).json(result);
-//   } else {
-//     res.json(result);
-//   }
-// });
-
 // Endpoint to get machine health score of all machines in the database
 app.get('/machine-health', async (req: Request, res: Response) => {
   console.log('In GET /machine-health');
@@ -53,6 +43,8 @@ app.post('/machine', async (req: Request, res: Response) => {
   }
 });
 
+// If a <machineId> is provided, updates that machine with the part data provided
+// Otherwise, if no <machineId> is provided, adds a new machine and part to the database
 app.put('/machine', async (req: Request, res: Response) => {
   console.log('In PUT /machine');
   const result = await editMachineData(req);

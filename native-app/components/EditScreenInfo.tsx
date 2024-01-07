@@ -2,7 +2,13 @@ import React, { useCallback, useState } from 'react';
 import { Button, Platform, StyleSheet, TextInput } from 'react-native';
 
 import { Text, View } from './Themed';
-import { MachineType } from '../data/types';
+import {
+  AssemblyLinePart,
+  MachineType,
+  PaintingStationPart,
+  QualityControlStationPart,
+  WeldingRobotPart,
+} from '../data/types';
 import { useFocusEffect } from 'expo-router';
 import Picker from './Picker';
 import Slider from '@react-native-community/slider';
@@ -101,10 +107,67 @@ export default function EditScreenInfo({ path }: { path: string }) {
     }
   };
 
+  // Returns true if <partName> is a valid part for machineType <machineName>
+  // Otherwise returns false
+  const isValidPartForMachineType = () => {
+    let isRobotPartValid = false;
+    if (machineName === MachineType.WeldingRobot) {
+      Object.values(WeldingRobotPart).forEach((validPart) => {
+        console.log('current part', validPart, '===?', partName);
+        if (validPart === partName) {
+          isRobotPartValid = true;
+          return;
+        }
+      });
+    } else if (machineName === MachineType.PaintingStation) {
+      Object.values(PaintingStationPart).forEach((validPart) => {
+        console.log('current part', validPart, '===?', partName);
+        if (validPart === partName) {
+          isRobotPartValid = true;
+          return;
+        }
+      });
+    } else if (machineName === MachineType.QualityControlStation) {
+      Object.values(QualityControlStationPart).forEach((validPart) => {
+        console.log('current part', validPart, '===?', partName);
+        if (validPart === partName) {
+          isRobotPartValid = true;
+          return;
+        }
+      });
+    } else if (machineName === MachineType.AssemblyLine) {
+      Object.values(AssemblyLinePart).forEach((validPart) => {
+        console.log('current part', validPart, '===?', partName);
+        if (validPart === partName) {
+          isRobotPartValid = true;
+          return;
+        }
+      });
+    } else {
+      console.error(
+        'Invalid machineName',
+        machineName,
+        'provided in isValidPartForMachineType()'
+      );
+      return false;
+    }
+
+    return isRobotPartValid;
+  };
+
   const savePart = async () => {
     // Show an error message if not all fields have been filled out
     if (!allFieldsFilled()) {
       setErrorMessage('Please fill out all fields');
+      // Clear the message after 2 seconds
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 2000);
+      return;
+    }
+
+    if (!isValidPartForMachineType()) {
+      setErrorMessage('Please select a valid part for machine: ' + machineName);
       // Clear the message after 2 seconds
       setTimeout(() => {
         setErrorMessage('');

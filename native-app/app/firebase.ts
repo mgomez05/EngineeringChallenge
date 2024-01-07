@@ -6,6 +6,13 @@ import {
 } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// NOTE: This code should NOT Be deployed to production under any circumstances.
+//       It is horrible practice to hardcode sensitive firebase credentials
+//       in the code base.
+//
+//       I have purposefully neglected best practices here for the ease of testing
+//       by BellSant, but this code should really use environment
+//       variables to read in the Firebase config variables
 const firebaseConfig = {
   apiKey: 'AIzaSyBaCtwzND_8Ky0jj3nAr89NmAWoY5iwzYo',
   authDomain: 'bell-sant-coding-challenge.firebaseapp.com',

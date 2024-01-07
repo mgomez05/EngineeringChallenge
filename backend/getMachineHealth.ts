@@ -2,6 +2,9 @@ import { Request } from 'express';
 import {
   AssemblyLinePart,
   MachineType,
+  PaintingStationPart,
+  QualityControlStationPart,
+  WeldingRobotPart,
   partInfo,
 } from '../native-app/data/types';
 import { calculateMachineHealth } from './calculations';
@@ -82,13 +85,7 @@ export const getMachineHealthAllMachines = async (req: Request) => {
     });
 
     // Convert the machine parts array into an array of type partInfo[]
-    const machinePartInfos: partInfo[] = machineParts.map((part: string) => {
-      const machinePartInfo: partInfo = {
-        name: part as AssemblyLinePart,
-        value: (machine as AssemblyLine)[part as keyof AssemblyLine] as number,
-      };
-      return machinePartInfo;
-    });
+    const machinePartInfos = getMachinePartInfos(machineParts, machine);
 
     // Filter out any machine parts whose value is 0
     const filteredMachinePartInfos: partInfo[] = machinePartInfos.filter(
@@ -123,4 +120,53 @@ export const getMachineHealthAllMachines = async (req: Request) => {
     factory: factoryScore.toFixed(2),
     machineScores,
   };
+};
+// Convert the machine parts array into an array of type partInfo[]
+// If <machine> is not one of the 4 machine types, this returns the empty array []
+const getMachinePartInfos = (
+  machineParts: any[],
+  machine: WeldingRobot | PaintingStation | AssemblyLine | QualityControlStation
+) => {
+  let machinePartInfos: partInfo[];
+  if (isWeldingRobot(machine)) {
+    machinePartInfos = machineParts.map((part: string) => {
+      const machinePartInfo: partInfo = {
+        name: part as WeldingRobotPart,
+        value: (machine as WeldingRobot)[part as keyof WeldingRobot] as number,
+      };
+      return machinePartInfo;
+    });
+  } else if (isPaintingStation(machine)) {
+    machinePartInfos = machineParts.map((part: string) => {
+      const machinePartInfo: partInfo = {
+        name: part as PaintingStationPart,
+        value: (machine as PaintingStation)[
+          part as keyof PaintingStation
+        ] as number,
+      };
+      return machinePartInfo;
+    });
+  } else if (isQualityControlStation(machine)) {
+    machinePartInfos = machineParts.map((part: string) => {
+      const machinePartInfo: partInfo = {
+        name: part as QualityControlStationPart,
+        value: (machine as QualityControlStation)[
+          part as keyof QualityControlStation
+        ] as number,
+      };
+      return machinePartInfo;
+    });
+  } else if (isAssemblyLine(machine)) {
+    machinePartInfos = machineParts.map((part: string) => {
+      const machinePartInfo: partInfo = {
+        name: part as AssemblyLinePart,
+        value: (machine as AssemblyLine)[part as keyof AssemblyLine] as number,
+      };
+      return machinePartInfo;
+    });
+  } else {
+    return [];
+  }
+
+  return machinePartInfos;
 };

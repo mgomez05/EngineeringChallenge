@@ -73,7 +73,7 @@ export default function RegisterScreen() {
         <TextInput
           style={styles.input}
           value={email}
-          placeholder={'Username'}
+          placeholder={'Email'}
           onChangeText={setEmail}
         />
 

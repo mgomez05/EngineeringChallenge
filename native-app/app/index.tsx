@@ -87,7 +87,7 @@ export default function RegisterScreen() {
           onChangeText={setPassword}
         />
 
-        {/* Register Buttossn */}
+        {/* Register Button */}
         <Button title='Register' onPress={createUser} />
 
         {/* Button for navigating to Login Screen */}

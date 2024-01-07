@@ -53,7 +53,6 @@ export default function StateScreen() {
         setScores([]);
       }
     } catch (error) {
-      console.error(error);
       console.log(
         `There was an error calculating health. ${
           error.toString() === 'AxiosError: Network Error'
@@ -134,7 +133,6 @@ export default function StateScreen() {
             <>
               <Text style={styles.title2}>Machine Health Scores</Text>
               {scores.machineScores.map((score) => {
-                console.log('Current score is', score);
                 return (
                   <MachineScore
                     key={score.machineTypeId}

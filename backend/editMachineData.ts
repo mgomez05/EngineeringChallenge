@@ -93,11 +93,10 @@ export const editMachineData = async (req: Request) => {
           }
         );
       } else if (machineType === MachineType.PaintingStation) {
-        machineRecordInDatabase = await getPrismaClient().assemblyLine.findMany(
-          {
+        machineRecordInDatabase =
+          await getPrismaClient().paintingStation.findMany({
             where: { id: machineId },
-          }
-        );
+          });
       } else if (machineType === MachineType.QualityControlStation) {
         machineRecordInDatabase =
           await getPrismaClient().qualityControlStation.findMany({

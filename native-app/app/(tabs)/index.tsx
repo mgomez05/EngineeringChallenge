@@ -65,7 +65,7 @@ export default function StateScreen() {
     if (isWeldingRobot(machine)) {
       return (
         <PartsOfMachine
-          key={machine.machineTypeId}
+          key={machine.id}
           machineName={'Welding Robot'}
           parts={machine}
         />
@@ -73,7 +73,7 @@ export default function StateScreen() {
     } else if (isAssemblyLine(machine)) {
       return (
         <PartsOfMachine
-          key={machine.machineTypeId}
+          key={machine.id}
           machineName={'Assembly Line'}
           parts={machine}
         />
@@ -81,7 +81,7 @@ export default function StateScreen() {
     } else if (isPaintingStation(machine)) {
       return (
         <PartsOfMachine
-          key={machine.machineTypeId}
+          key={machine.id}
           machineName={'Painting Station'}
           parts={machine}
         />
@@ -89,7 +89,7 @@ export default function StateScreen() {
     } else if (isQualityControlStation(machine)) {
       return (
         <PartsOfMachine
-          key={machine.machineTypeId}
+          key={machine.id}
           machineName={'Quality Control Station'}
           parts={machine}
         />

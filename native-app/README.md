@@ -45,11 +45,13 @@ The project structure is organized as follows:
 The app has the following screens and features:
 
 - **Machine Health Screen**: This screen has two tabs, described below:
-  - **Main Tab** - Allows the user to view all machines currently in the databse, calculate machine health score, and reset the machines in the database
+  - **Main Tab** - Allows the user to view all machines currently in the database, calculate machine health score, and reset the machines in the database
   - **Log Part Tab** - Allows user to update an existing machine with a new value for a part, or add a new part (and a new machine) to the database
 - **Registration Screen**: Allows the user to create a new user for the app (via firebase) using an email and password
 - **Login Screen**: Allows the user to sign in to the app if they have already created a user, but have been signed out
 
 ## Other Changes
 
-- I have updated the initial landing page for the app to be the Registration Screen, instead of the Tabs screen, so that we can check if the user is authenticated first before allowing them to enter the rest of the app. Once the user is successfully logged in, the app navigates them to the **Main Tab** on the **Machine Health Screen**
+I have updated the initial landing page for the app to be the Registration Screen, instead of the Tabs screen, so that we can check if the user is authenticated first before allowing them to enter the rest of the app.
+
+Once the user is successfully logged in, the app navigates them to the **Main Tab** on the **Machine Health Screen**

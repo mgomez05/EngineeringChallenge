@@ -138,6 +138,7 @@ Because automobile plants can be quite large, the current solution assumes that 
 - Update the app to have a sign out button, so that the user can sign themselves out of the mobile app
 - Update the firebase config (`native-app/app/firebase.ts`) to read in firebase credentials via environment variables, for reasons of security
 - Update the registration screen (`native-app/app/index.tsx`) and login screen (`native-app/app/login.tsx`) to show error messages if registration or login fails (as of now, errors can only be identified by checking the console where the mobile app is running)
+- Update the **Main Tab** to show errors if the "Reset Machine Data" button or "Calculate Health" button fail for some reason (i.e. network error)
 - Update the UI overall to be more aesthetically appealing
 - Update the backend to link all machines to a single `machine` table, such that each entry in the table has an id, timestamp, and machineType, and a link to one of the 4 existing tables. This will allow for easier identification of machines at run time, and allow us to do useful operations such as timestamp sorting using database queries
 

@@ -1,12 +1,14 @@
 # Factory Health Monitor - Authentication, State Management, and Persistence
 
-## Overview
+## Introduction
 
-You are provided with a starter project that includes a React Native mobile app and a backend API, each in their respective folders. Each folder contains a README with instructions on how to run the builds. The goal of this coding challenge is to add authentication and session management to the app, improve the state management of the data returned by the API, and implement a persistence layer on the backend. When a user logs in, their history of data points and scores should be retrieved and displayed.
+Welcome to my solution to the BellSant Coding challenge. Given a starter project that includes a React Native mobile app and a backend API, (each in their respective folders) candidates were tasked with updating the project to meet the following goal:
 
-### The Application
+_The goal of this coding challenge is to add authentication and session management to the app, improve the state management of the data returned by the API, and implement a persistence layer on the backend. When a user logs in, their history of data points and scores should be retrieved and displayed_
 
-The application you'll be working on is a tool for evaluating the health of various machines in an automobile manufacturing plant. This plant features a range of machines, each with specific data points that you will use to assess the condition of the production process.
+### About The Application
+
+The application itself is a tool for evaluating the health of various machines in an automobile manufacturing plant. This plant features a range of machines, each with specific data points needed to assess the condition of the production process.
 
 #### Machines and Their Variables
 
@@ -43,7 +45,9 @@ The application you'll be working on is a tool for evaluating the health of vari
 
 ### Time Limit
 
-You are expected to spend approximately 3 hours on this challenge. While we understand that building a app can be a never-ending task, we're interested in seeing how far you can get and how you prioritize tasks to maximize quality/delivery within the given time frame.
+The recommended time limit for this challenge is approximately 3 hours.
+
+I ultimately spent 10 hours implementing and documenting my solution.
 
 ## Repository Structure
 
@@ -60,70 +64,95 @@ The repository is structured as follows:
 │   ├── README.md               # The README file for running the API Backend
 │   └── ...
 │
-├── MachineHealth.apk           # The compiled android app for running on a device or emulator (if helpful)
+├── MachineHealth.apk           # The compiled android app provided by BellSantCoding, before
+|                               # I made changes to the app
+|
 ├── README.md                   # This README file
 ```
 
 ## Getting Started
 
-1. Fork this repository to your GitHub account.
-2. Clone your forked repository to your local machine.
+1. Clone this repository to your local machine
 
-## Running the App Locally
-
-To run the Machine Health Evaluation app locally, you'll need to set up and run both the React Native app and the API backend separately. Each of the respective folders are in this director and each have their own README files to help you get started.
+To run the Machine Health Evaluation app locally, you'll need to set up and run both the React Native app and the API backend separately. Each of the respective folders are in this directory and each have their own README files to help you get started.
 
 To use the Machine Health Evaluation app locally, you'll need to keep both the API and the React Native app running simultaneously. It's recommended to open separate terminal/command windows for each and run them in parallel.
 
 - In one terminal window, navigate to the `backend` folder and run the API backend.
 - In another terminal window, navigate to the `native-app` folder and run the React Native app.
 
-Keep in mind that the React Native app relies on the API to fetch and calculate machine health data. Ensure that the API is accessible to the app for it to function correctly.
+## My Approach to the Challenge
 
-For specific details on running the API and React Native app, refer to their respective README files in their respective folders.
+### Part 1. Authentication and Session Management
 
-## Requirements
+To implement user authentication in the mobile app, I chose to use Firebase Authentication. Users are now able to register on the app via Firebase, and log in securely using their credentials. The solution also allows users to remain authenticated between app sessions.
 
-1. **Authentication and Session Management:**
+### Part 2. Data State Management
 
-   - Implement user authentication in the Expo mobile app. Users should be able to log in securely using credentials.
-   - Manage user sessions and ensure that users remain authenticated between app sessions.
+While the starter project's solution for data state management relied primarily on client side storage via AsyncStorage, I decided to go with a significantly different approach. Instead of storing the data via AsyncStorage, the machine data is retrieved on demand, using the `GET /machine` endpoint for retrieving the machines in the database, and using `GET /machine-health` to retrieve machine and factory scores from the database. In this way, the mobile app relies entirely on the backend for updating the machines and scores displayed on the app. I opted for this approach in order to make the server the single point of truth for the application, which greatly simplifies client-side state management and allows for more straightforward testing of the app. The app now loads machine data for the **Main Tab** and the **Log Part Tab** whenever the user arrives at those screens, and also reloads machine data if the "Reset Machine Data" button is clicked, or if we edit machine data by saving changes on the **Log Part Tab**. In this way, machine data is always up to date. A more optimized solution might use React-Query for optimizing API calls or Redux for maintaining application state, but given the time constraints, I thought it best to keep things simple.
 
-2. **Data State Management:**
+### Part 3 Persistence Layer on the Backend
 
-   - Review and update (as needed) the existing state management for data returned by the API. Feel free to bring in a state management library if it'd be helpful.
-   - Ensure that the app efficiently manages and updates the state when new data points and scores are fetched.
+For a persistence layer, I decided to use a Heroku-hosted Postgres database coupled with the prisma library - it's a quick and straightforward means of persisting data on the backend, and one I've implemented before. An alternative solution may have called for a thid party storage such as Cloud Firestore, but I preferred the strong typing provided by prisma, especially given that the machine types were already provided at the start of the challenge. All machines and their parts are stored in the database for future retrieval, however, due to time constraints, I was unable to implement persistence for machine scores. However, if I were to implement machine score persistence, I would follow the following steps:
 
-3. **Persistence Layer on the Backend:**
+Step 1. Add a new table for machine scores to `schema.prisma`, something like this:
 
-   - Implement a persistence layer on the backend to store historical data points and scores for each user/machine.
-   - When a new data point or score is recorded, ensure it is stored in the persistence layer for future retrieval.
+```
+model MachineScore {
+    id                        String   id @default(uuid())
+    machineId                 String
+    machineType               String
+    machineScore              Float
+    dateCreated               DateTime @default(now())
+}
 
-4. **Stretch Goals (Optional):**
-   - Implement a section to show the history of scores with trends over time.
-   - Include visualizations such as charts or graphs to represent the trends in machine health scores.
+```
 
-## Guidelines
+Step 2. Create a migration using `yarn prisma migrate dev` to add the new `MachineScore` table to the database
 
-- Use the provided backend API and Expo mobile app as a starting point.
-- Follow best practices for authentication and session management in React Native.
-- Enhance the state management to ensure a clean and organized flow of data.
-- Implement a persistence layer on the backend for storing historical data points and scores.
-- Document any changes made to the existing codebase and provide a brief explanation of your architectural decisions.
+Step 3. Update the `GET /machine-health` endpoint to create a new `MachineScore` entry in the database for each machine score it calculates while executing the endpoint's logic
 
-## Submission
+Step 4. Implement a new endpoint `GET machine-health/history/:machineId` endpoint which would return all the entries for a given machine in the `MachineScore` table as a JSON array, sorted by most recent using the `dateCreated` field
 
-- Provide a link to your Git repository containing the updated project.
-- Include instructions on how to run the modified builds locally.
+Step 5. Implement a `<HistoricalMachineScore>` component in the mobile app for displaying the history of a given machine
 
-## Evaluation Criteria
+Step 6. Add a new tab to the mobile app that allows the user to select different machine ids from a `<Picker>` element, and then retrieve and display the machine scores for that machine in cronological order using the `GET machine-health/history/:machineId` endpoint and `<HistoricalMachineScore>` component mentioned earlier
 
-- Implementation of Authentication and Session Management
-- Improvement of Data State Management
-- Implementation of a Persistence Layer on the Backend
-- Adherence to Best Practices
-- Documentation
-- Overall Code Quality
+### Part 4. Stretch Goals (Optional)
 
-**Note:**
-This project is designed to take approximately 3 hours, but there is no strict time limit. We are interested in seeing how far you can get and the quality of your final deliverable. Focus on completing the core requirements before attempting the stretch goals. Feel free to make reasonable assumptions if certain details are not explicitly provided. If you encounter challenges, document them and describe how you would address them with more time.
+The stretch goals for this challenge called for implementing a section to show the history of scores with trends over time, with possible visualization to represent the trends in machine health scores. Due to time constraints, I was unable to implement the stretch goals, but given more time I would likely implement the `MachineScore` solution mentioned above, and use Recharts and/or the D3 library to implement more advanced data visualizations, as I have worked with those libraries on prior projects.
+
+### Other Assumptions
+
+- Because automobile plants can be quite large, the current solution assumes that an automobile plant can have multiple machines of the same type. For this reason, the main insertion method for the database (`POST /machine`) allows for multiple machines of the same type (i.e. 2 Welding Robots) to be inserted at the same time. This is also the reason that the `PUT /machine` endpoint allows for both the creation of a new machine, as well as the editing of an existing machine - the app needed a new means of adding parts to an existing machine. The solution also assumes that parts of a machine with "unset" values are 0. For example, if a new Welding Robot machine is created in the database with an error rate of `0.77`, its errorRate field would be set to `0.77`, and every other part would have a value of 0.
+
+## Things I Would Implement With More Time:
+
+- Update the backend and database to store score history, such that we keep track of each time that machine scores are calculated. I would also update the mobile app to show this score history (as described earlier in this README)
+- Update the backend's endpoints to be secured via auth token, such that only API calls made with a valid auth token would be accepted (all other requests would be rejected with a 401 status code)
+- Once the backend's endpoints were secured, I would add a `userId` field to the 4 machine tables in the database schema (`schema.prisma`), and update the `POST /machine` and `PUT machine` endpoints to set the corresponding `userId` on each machine when they get created in the database
+- Update the app to have a sign out button, so that the user can sign themselves out of the mobile app
+- Update the firebase config (`native-app/app/firebase.ts`) to read in firebase credentials via environment variables, for reasons of security
+- Update the registration screen (`native-app/app/index.tsx`) and login screen (`native-app/app/login.tsx`) to show error messages if registration or login fails (as of now, errors can only be identified by checking the console where the mobile app is running)
+- Update the UI overall to be more aesthetically appealing
+- Update the backend to link all machines to a single `machine` table, such that each entry in the table has an id, timestamp, and machineType, and a link to one of the 4 existing tables. This will allow for easier identification of machines at run time, and allow us to do useful operations such as timestamp sorting using database queries
+- Add a test suite for the backend using Jest, one that checks for each of the possible status codes and responses for the implemented API endpoints, and checks for more complicated user flows, including but not limited to:
+
+  - Edit flow - create machine, then edit machine, then edit different part of the same machine, and check that machine parts have correct values
+  - Reset flow - create machine, delete all machines, then create another machine, and check that there is only 1 machine in the database
+  - Machine health flow - create machine, then check retrieved machine score is correct. Then add another part to the same machine, retrieve its machine score, and check that its score is now appropriately different
+
+- Add a test suite for the mobile app, with tests including but not limited to the following. Tests should be run both on an iOS device and an Android device
+
+  - Checking that registration fails when inputting already registered email
+  - Checking that registration fails with invalid email
+  - Checking that registration fails with valid email but invaid password (i.e. pasword is too short)
+  - Checking that registration succeeds with valid email and password
+  - Checking that login fails with incorrect password
+  - Checking that login fails with unregistered email
+  - Checking that login succeeds with correct user name and password
+  - Checking that logging in, closing the app without signing out, and then opening the app brings the user to the **Main Tab** instead f the Registration or Login Screen
+  - Checking that the **Main Tab** shows an instructional message when machine scores haven't been calculated yet
+  - Checking that the **Main Tab** shows no machines if user hasn't logged any parts yet
+  - Checking that the **Main Tab** shows correct machines and parts after logging parts and values on the **Log Part Tab**
+    .

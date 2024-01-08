@@ -93,7 +93,7 @@ I opted for this approach in order to make the server the single point of truth 
 
 A more optimized solution might use React-Query for optimizing API calls or Redux for maintaining application state, but given the time constraints, I thought it best to keep things simple.
 
-### Part 3 Persistence Layer on the Backend
+### Part 3. Persistence Layer on the Backend
 
 For a persistence layer, I decided to use a Heroku-hosted Postgres database coupled with the prisma library - it's a quick and straightforward means of persisting data on the backend, and one I've implemented before. An alternative solution may have called for a thid party storage such as Cloud Firestore, but I preferred the strong typing provided by prisma, especially given that the machine types were already provided at the start of the challenge.
 

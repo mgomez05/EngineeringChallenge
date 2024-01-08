@@ -83,7 +83,7 @@ To use the Machine Health Evaluation app locally, you'll need to keep both the A
 
 ### Part 1. Authentication and Session Management
 
-To implement user authentication in the mobile app, I chose to use Firebase Authentication. Users are now able to register on the app via Firebase, and log in securely using their credentials. The solution also allows users to remain authenticated between app sessions.
+To implement user authentication in the mobile app, I chose to use Firebase Authentication. Users are now able to register on the app via Firebase, and log in securely using their credentials. The solution also allows users to remain authenticated between app sessions, redirecting users from the Registration screen to the Main Screen of the app if the user is already logged in.
 
 ### Part 2. Data State Management
 

@@ -72,9 +72,7 @@ The repository is structured as follows:
 
 ## Getting Started
 
-1. Clone this repository to your local machine
-
-To run the Machine Health Evaluation app locally, you'll need to set up and run both the React Native app and the API backend separately. Each of the respective folders are in this directory and each have their own README files to help you get started.
+To run the Machine Health Evaluation app locally, you'll need to clone this repository to your local machine, and set up and run both the React Native app and the API backend separately. Each of the respective folders are in this directory and each have their own README files to help you get started.
 
 To use the Machine Health Evaluation app locally, you'll need to keep both the API and the React Native app running simultaneously. It's recommended to open separate terminal/command windows for each and run them in parallel.
 

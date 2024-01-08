@@ -278,7 +278,7 @@ STATUS 200
   - `schema.prisma` - Contains the database schema, outlining all the database tables used in the project
 - `addMachinesToDatabase.ts` - Contains the logic for the `POST /machine` endpoint and related helper functions
 - `editMachineData.ts` - Contains the logic for the `PUT /machine` endpoint
-- `getMachineHealth.ts` - Contains the logic for the `GET /machine` endpoint
+- `getMachineHealth.ts` - Contains the logic for the `GET /machine-health` endpoint
 - `prismaUtils.ts` - Contains the `getPrismaClient()` function, which helps initialize the prisma client and provide a single point of truth for accessing the prisma client throughout the backend
 - `machineHealth.ts` - Contains the logic for the old `POST /machine-health` endpoint provided by BellSant
   - **NOTE:** The `POST /machine-health` endpoint is not accessible in my version of the backend API

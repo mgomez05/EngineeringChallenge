@@ -126,9 +126,9 @@ model MachineScore {
 
 The stretch goals for this challenge called for implementing a section to show the history of scores with trends over time, with possible visualization to represent the trends in machine health scores. Due to time constraints, I was unable to implement the stretch goals, but given more time I would likely implement the `MachineScore` solution mentioned above, and use Recharts and/or the D3 library to implement more advanced data visualizations, as I have worked with those libraries on prior projects.
 
-### Other Assumptions
+### Other Assumptions For The Challenge
 
-- Because automobile plants can be quite large, the current solution assumes that an automobile plant can have multiple machines of the same type. For this reason, the main insertion method for the database (`POST /machine`) allows for multiple machines of the same type (i.e. 2 Welding Robots) to be inserted at the same time. This is also the reason that the `PUT /machine` endpoint allows for both the creation of a new machine, as well as the editing of an existing machine - the app needed a new means of adding parts to an existing machine. The solution also assumes that parts of a machine with "unset" values are 0. For example, if a new Welding Robot machine is created in the database with an error rate of `0.77`, its errorRate field would be set to `0.77`, and every other part would have a value of 0.
+Because automobile plants can be quite large, the current solution assumes that an automobile plant can have multiple machines of the same type. For this reason, the main insertion method for the database (`POST /machine`) allows for multiple machines of the same type (i.e. 2 Welding Robots) to be inserted at the same time. This is also the reason that the `PUT /machine` endpoint allows for both the creation of a new machine, as well as the editing of an existing machine - the app needed a new means of adding parts to an existing machine. The solution also assumes that parts of a machine with "unset" values are 0. For example, if a new Welding Robot machine is created in the database with an error rate of `0.77`, its errorRate field would be set to `0.77`, and every other part would have a value of 0.
 
 ## Things I Would Implement With More Time:
 

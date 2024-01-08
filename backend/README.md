@@ -27,7 +27,7 @@ Follow these steps to set up the backend:
    yarn
    ```
 
-3. Add necessary environment variables to enable the API to connect to the database.
+3. Create a `.env` file and add the necessary environment variables for the API to connect to the database:
 
 - 3a. If you'd like to use the database I set up, reach out to me **mgomez05** for the database credentials
 

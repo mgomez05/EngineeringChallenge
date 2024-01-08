@@ -95,7 +95,9 @@ A more optimized solution might use React-Query for optimizing API calls or Redu
 
 ### Part 3 Persistence Layer on the Backend
 
-For a persistence layer, I decided to use a Heroku-hosted Postgres database coupled with the prisma library - it's a quick and straightforward means of persisting data on the backend, and one I've implemented before. An alternative solution may have called for a thid party storage such as Cloud Firestore, but I preferred the strong typing provided by prisma, especially given that the machine types were already provided at the start of the challenge. All machines and their parts are stored in the database for future retrieval, however, due to time constraints, I was unable to implement persistence for machine scores. However, if I were to implement machine score persistence, I would follow the following steps:
+For a persistence layer, I decided to use a Heroku-hosted Postgres database coupled with the prisma library - it's a quick and straightforward means of persisting data on the backend, and one I've implemented before. An alternative solution may have called for a thid party storage such as Cloud Firestore, but I preferred the strong typing provided by prisma, especially given that the machine types were already provided at the start of the challenge.
+
+All machines and their parts are stored in the database for future retrieval, however, due to time constraints, I was unable to implement persistence for machine scores. However, if I were to implement machine score persistence, I would follow the following steps:
 
 Step 1. Add a new table for machine scores to `schema.prisma`, something like this:
 

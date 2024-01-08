@@ -140,10 +140,13 @@ Because automobile plants can be quite large, the current solution assumes that 
 - Update the registration screen (`native-app/app/index.tsx`) and login screen (`native-app/app/login.tsx`) to show error messages if registration or login fails (as of now, errors can only be identified by checking the console where the mobile app is running)
 - Update the UI overall to be more aesthetically appealing
 - Update the backend to link all machines to a single `machine` table, such that each entry in the table has an id, timestamp, and machineType, and a link to one of the 4 existing tables. This will allow for easier identification of machines at run time, and allow us to do useful operations such as timestamp sorting using database queries
+
+## Testing Strategy (That I Would Implement With More Time):
+
 - Add a test suite for the backend using Jest, one that checks for each of the possible status codes and responses for the implemented API endpoints, and checks for more complicated user flows, including but not limited to:
 
   - Edit flow - create machine, then edit machine, then edit different part of the same machine, and check that machine parts have correct values
-  - Reset flow - create machine, delete all machines, then create another machine, and check that there is only 1 machine in the database
+  - Reset flow - create machine, delete all machines, then create another machine, and check that there is only 1 machine in the database with correct part values
   - Machine health flow - create machine, then check retrieved machine score is correct. Then add another part to the same machine, retrieve its machine score, and check that its score is now appropriately different
 
 - Add a test suite for the mobile app, with tests including but not limited to the following. Tests should be run both on an iOS device and an Android device
@@ -155,8 +158,7 @@ Because automobile plants can be quite large, the current solution assumes that 
   - Checking that login fails with incorrect password
   - Checking that login fails with unregistered email
   - Checking that login succeeds with correct user name and password
-  - Checking that logging in, closing the app without signing out, and then opening the app brings the user to the **Main Tab** instead f the Registration or Login Screen
+  - Checking that logging in, closing the app without signing out, and then opening the app brings the user to the **Main Tab** instead of the Registration or Login Screen (in other words, a test to check that user authentication is maintained across app sesions)
   - Checking that the **Main Tab** shows an instructional message when machine scores haven't been calculated yet
   - Checking that the **Main Tab** shows no machines if user hasn't logged any parts yet
   - Checking that the **Main Tab** shows correct machines and parts after logging parts and values on the **Log Part Tab**
-    .

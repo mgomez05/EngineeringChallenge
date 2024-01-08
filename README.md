@@ -99,7 +99,7 @@ For a persistence layer, I decided to use a Heroku-hosted Postgres database coup
 
 All machines and their parts are stored in the database for future retrieval, however, due to time constraints, I was unable to implement persistence for machine scores. However, if I were to implement machine score persistence, I would follow the following steps:
 
-Step 1. Add a new table for machine scores to `schema.prisma`, something like this:
+**Step 1**. Add a new table for machine scores to `schema.prisma`, something like this:
 
 ```
 model MachineScore {
@@ -112,15 +112,15 @@ model MachineScore {
 
 ```
 
-Step 2. Create a migration using `yarn prisma migrate dev` to add the new `MachineScore` table to the database
+**Step 2**. Create a migration using `yarn prisma migrate dev` to add the new `MachineScore` table to the database
 
-Step 3. Update the `GET /machine-health` endpoint to create a new `MachineScore` entry in the database for each machine score it calculates while executing the endpoint's logic
+**Step 3**. Update the `GET /machine-health` endpoint to create a new `MachineScore` entry in the database for each machine score it calculates while executing the endpoint's logic
 
-Step 4. Implement a new endpoint `GET machine-health/history/:machineId` endpoint which would return all the entries for a given machine in the `MachineScore` table as a JSON array, sorted by most recent using the `dateCreated` field
+**Step 4**. Implement a new endpoint `GET machine-health/history/:machineId` endpoint which would return all the entries for a given machine in the `MachineScore` table as a JSON array, sorted by most recent using the `dateCreated` field
 
-Step 5. Implement a `<HistoricalMachineScore>` component in the mobile app for displaying the history of a given machine
+**Step 5**. Implement a `<HistoricalMachineScore>` component in the mobile app for displaying the history of a given machine
 
-Step 6. Add a new tab to the mobile app that allows the user to select different machine ids from a `<Picker>` element, and then retrieve and display the machine scores for that machine in cronological order using the `GET machine-health/history/:machineId` endpoint and `<HistoricalMachineScore>` component mentioned earlier
+**Step 6**. Add a new tab to the mobile app that allows the user to select different machine ids from a `<Picker>` element, and then retrieve and display the machine scores for that machine in cronological order using the `GET machine-health/history/:machineId` endpoint and `<HistoricalMachineScore>` component mentioned earlier
 
 ### Part 4. Stretch Goals (Optional)
 

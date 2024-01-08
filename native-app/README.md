@@ -1,10 +1,8 @@
 # Machine Health App (React Native Expo)
 
-Welcome to the Machine Health App, a React Native Expo project designed to evaluate the health of various machines in an automobile factory. This README will guide you on setting up and running the app, as well as understanding its structure.
+Welcome to my version of the Machine Health App, a React Native Expo project designed to evaluate the health of various machines in an automobile factory. This README will guide you on setting up and running the app, as well as understanding its structure.
 
-## Getting Started
-
-To get started with the app, follow these steps:
+## Running the Mobile App Locally
 
 ### Prerequisites
 
@@ -34,21 +32,24 @@ This will launch the Expo development server, and you can access the app on your
 
 The project structure is organized as follows:
 
-- `App.tsx`: The entry point of the Expo app, where the navigation is configured.
+- `app/_layout.tsx`: The entry point of the Expo app, where the navigation is configured
+- `app/`: Contains individual screens or pages/tabs of the app
+  - `app/index.tsx`: **The first screen shown to the user.** It is also the Registration Screen
+  - `app/login.tsx`: The Login Screen
+  - `app/firebase.tsx`: Contains the firebase configuration, and logic for initializing firebase in the app
 - `components/`: Contains reusable components used throughout the app.
-- `app/`: Contains individual screens or pages/tabs of the app.
 - `data/`: Stores JSON files with machine and part data for evaluation.
 
 ## Screens and Features
 
 The app has the following screens and features:
 
-- **Machine Health**: Allows users to select a machine, part name, and part value, and calculates the health score of the machine.
+- **Machine Health Screen**: This screen has two tabs, described below:
+  - **Main Tab** - Allows the user to view all machines currently in the databse, calculate machine health score, and reset the machines in the database
+  - **Log Part Tab** - Allows user to update an existing machine with a new value for a part, or add a new part (and a new machine) to the database
+- **Registration Screen**: Allows the user to create a new user for the app (via firebase) using an email and password
+- **Login Screen**: Allows the user to sign in to the app if they have already created a user, but have been signed out
 
-## Adding Tests
+## Other Changes
 
-You are free to choose how you'd like to test this repo, think about options and approaches and build out (and document!) what you think would be an appropriate testing infrastructure. Hint: think about a combo of unit tests and integration tests, there is an android APK in the root of the exercise if it's helpful.
-
-## Customization
-
-If you would like, feel free to modify the app as needed.
+- I have updated the initial landing page for the app to be the Registration Screen, instead of the Tabs screen, so that we can check if the user is authenticated first before allowing them to enter the rest of the app. Once the user is successfully logged in, the app navigates them to the **Main Tab** on the **Machine Health Screen**

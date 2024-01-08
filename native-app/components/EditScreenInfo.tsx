@@ -290,7 +290,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text>New Machine or Existing Machine</Text>
         <Slider
-          style={{ width: 50, height: 40 }}
+          style={{ width: 50, marginVertical: 10 }}
           value={sliderValue}
           onValueChange={setSliderValue}
           minimumValue={0}
@@ -370,12 +370,12 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 0,
     paddingHorizontal: 10,
   },
   healthScore: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: 10,
   },
 });
